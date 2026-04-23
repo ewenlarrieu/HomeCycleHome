@@ -1,0 +1,255 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  idRole      Int           @id @default(autoincrement()) @map("id_role")
+  libelle     String        @unique @db.VarChar(50)
+  utilisateurs Utilisateur[]
+
+  @@map("ROLE")
+}
+
+model Utilisateur {
+  idUtilisateur      Int                @id @default(autoincrement()) @map("id_utilisateur")
+  nom                String             @db.VarChar(50)
+  prenom             String             @db.VarChar(50)
+  email              String             @unique @db.VarChar(150)
+  motDePasse         String             @map("mot_de_passe") @db.VarChar(255)
+  telephone          String             @unique @db.VarChar(50)
+  dateCreation       DateTime           @map("date_creation") @db.Timestamp()
+  statusCompte       Boolean            @map("status_compte")
+  idRole             Int                @map("id_role")
+  
+  role               Role               @relation(fields: [idRole], references: [idRole])
+  adresses           Adresse[]
+  disponibilites     Disponibilite[]
+  cycles             Cycle[]
+  rendezVousClient   RendezVous[]       @relation("ClientRendezVous")
+  rendezVousTechnicien RendezVous[]     @relation("TechnicienRendezVous")
+  zonesCouvertes     Couvre[]
+
+  @@map("UTILISATEUR")
+}
+
+model Ville {
+  idVille     Int       @id @default(autoincrement()) @map("id_ville")
+  nomVille    String?   @map("nom_ville") @db.VarChar(50)
+  codePostal  String?   @map("code_postal") @db.VarChar(50)
+  adresses    Adresse[]
+
+  @@map("VILLE")
+}
+
+model Zone {
+  idZone        Int             @id @default(autoincrement()) @map("id_zone")
+  nomZone       String          @map("nom_zone") @db.VarChar(50)
+  codePostal    String          @map("code_postal") @db.VarChar(50)
+  latitude      Decimal?        @db.Decimal(9, 6)
+  longitude     Decimal?        @db.Decimal(9, 6)
+  
+  adresses      Adresse[]
+  disponibilites Disponibilite[]
+  techniciens   Couvre[]
+
+  @@map("ZONE")
+}
+
+model Adresse {
+  idAdresse           Int      @id @default(autoincrement()) @map("id_adresse")
+  rue                 String   @db.VarChar(50)
+  numeroRue           Int      @map("numero_rue") @db.SmallInt
+  complementAdresse   String?  @map("complement_adresse") @db.VarChar(50)
+  idVille             Int      @map("id_ville")
+  idZone              Int      @map("id_zone")
+  idUtilisateur       Int      @map("id_utilisateur")
+  
+  ville               Ville    @relation(fields: [idVille], references: [idVille])
+  zone                Zone     @relation(fields: [idZone], references: [idZone])
+  utilisateur         Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
+  rendezVous          RendezVous[]
+
+  @@map("ADRESSE")
+}
+
+model Disponibilite {
+  idDisponibilite Int      @id @default(autoincrement()) @map("id_disponibilite")
+  jourSemaine     Int      @map("jour_semaine")
+  heureDebut      DateTime @map("heure_debut") @db.Time()
+  heureFin        DateTime @map("heure_fin") @db.Time()
+  idZone          Int      @map("id_zone")
+  idUtilisateur   Int      @map("id_utilisateur")
+  
+  zone            Zone     @relation(fields: [idZone], references: [idZone])
+  utilisateur     Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
+
+  @@map("DISPONIBILITES")
+}
+
+model ForfaitIntervention {
+  idService          Int          @id @default(autoincrement()) @map("id_service")
+  nomService         String       @unique @map("nom_service") @db.VarChar(50)
+  prix               Decimal      @db.Decimal(5, 2)
+  dureeEstimeeMinutes Int?        @map("duree_estimee_minutes")
+  description        String       @map("description_") @db.VarChar(255)
+  
+  rendezVous         RendezVous[]
+
+  @@map("FORFAIT_INTERVENTION")
+}
+
+model TypeCycle {
+  idTypeCycle Int     @id @default(autoincrement()) @map("id_type_cycle")
+  libelle     String? @db.VarChar(50)
+  cycles      Cycle[]
+
+  @@map("TYPE_CYCLE")
+}
+
+model Cycle {
+  idCycle      Int        @id @default(autoincrement()) @map("id_cycle")
+  marque       String     @db.VarChar(50)
+  annee        Int
+  commentaire  String     @db.VarChar(50)
+  idTypeCycle  Int        @map("id_type_cycle")
+  idUtilisateur Int       @map("id_utilisateur")
+  
+  typeCycle    TypeCycle  @relation(fields: [idTypeCycle], references: [idTypeCycle])
+  utilisateur  Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
+  rendezVous   RendezVous[]
+
+  @@map("CYCLES")
+}
+
+model StatusRendezVous {
+  idStatusRendezVous Int          @id @default(autoincrement()) @map("id_status_rendez_vous")
+  libelle            String       @db.VarChar(50)
+  rendezVous         RendezVous[]
+
+  @@map("STATUS_RENDEZ_VOUS")
+}
+
+model RendezVous {
+  idRendezVous        Int               @id @default(autoincrement()) @map("id_rendez_vous")
+  dateRdv             DateTime          @map("date_rdv") @db.Date
+  heureRdv            DateTime          @map("heure_rdv") @db.Time()
+  prix                Decimal           @db.Decimal(5, 2)
+  commentaire         String?           @db.VarChar(50)
+  dureeRdv            Int               @map("duree_rdv")
+  idStatusRendezVous  Int               @map("id_status_rendez_vous")
+  idCycle             Int               @map("id_cycle")
+  idAdresse           Int               @map("id_adresse")
+  idService           Int               @map("id_service")
+  idUtilisateurClient Int?              @map("id_utilisateur")
+  idUtilisateurTechnicien Int           @map("id_utilisateur_1")
+  
+  status              StatusRendezVous  @relation(fields: [idStatusRendezVous], references: [idStatusRendezVous])
+  cycle               Cycle             @relation(fields: [idCycle], references: [idCycle])
+  adresse             Adresse           @relation(fields: [idAdresse], references: [idAdresse])
+  service             ForfaitIntervention @relation(fields: [idService], references: [idService])
+  client              Utilisateur?      @relation("ClientRendezVous", fields: [idUtilisateurClient], references: [idUtilisateur])
+  technicien          Utilisateur       @relation("TechnicienRendezVous", fields: [idUtilisateurTechnicien], references: [idUtilisateur])
+  paiement            Paiement?
+  photos              Photo[]
+  produits            ProduitRendezVous[]
+
+  @@map("RENDEZ_VOUS")
+}
+
+model StatusPaiement {
+  idStatus  Int        @id @default(autoincrement()) @map("id_status")
+  libelle   String     @db.VarChar(50)
+  paiements Paiement[]
+
+  @@map("STATUS_PAIEMENT")
+}
+
+model Paiement {
+  idPaiement    Int             @id @default(autoincrement()) @map("id_paiement")
+  montant       Decimal         @db.Decimal(5, 2)
+  datePaiement  DateTime        @map("date_paiement") @db.Timestamp()
+  idStatus      Int             @map("id_status")
+  idRendezVous  Int             @unique @map("id_rendez_vous")
+  
+  status        StatusPaiement  @relation(fields: [idStatus], references: [idStatus])
+  rendezVous    RendezVous      @relation(fields: [idRendezVous], references: [idRendezVous])
+
+  @@map("PAIEMENT")
+}
+
+model Photo {
+  idPhoto      Int        @id @default(autoincrement()) @map("id_photo")
+  urlPhoto     String     @unique @map("url_photo") @db.VarChar(250)
+  commentaire  String?    @db.VarChar(50)
+  dateAjout    DateTime   @map("date_ajout") @db.Timestamp()
+  idRendezVous Int        @map("id_rendez_vous")
+  
+  rendezVous   RendezVous @relation(fields: [idRendezVous], references: [idRendezVous])
+
+  @@map("PHOTOS")
+}
+
+model Stock {
+  idStock  Int       @id @default(autoincrement()) @map("id_stock")
+  quantite Int
+  produits Produit[]
+
+  @@map("STOCK")
+}
+
+model Produit {
+  idProduit     Int                 @id @default(autoincrement()) @map("id_produit")
+  nomProduit    String              @unique @map("nom_produit") @db.VarChar(50)
+  photoProduit  String              @map("photo_produit") @db.VarChar(50)
+  description   String              @db.VarChar(250)
+  idStock       Int                 @map("id_stock")
+  
+  stock         Stock               @relation(fields: [idStock], references: [idStock])
+  rendezVous    ProduitRendezVous[]
+
+  @@map("PRODUIT")
+}
+
+model ProduitRendezVous {
+  idProduitRendezVous Int        @id @default(autoincrement()) @map("id_produit_rendez_vous")
+  prixUnitaire        Decimal    @map("prix_unitaire") @db.Decimal(10, 2)
+  quantite            Int
+  idProduit           Int        @map("id_produit")
+  idRendezVous        Int        @map("id_rendez_vous")
+  
+  produit             Produit    @relation(fields: [idProduit], references: [idProduit])
+  rendezVous          RendezVous @relation(fields: [idRendezVous], references: [idRendezVous])
+
+  @@map("PRODUIT_RENDEZ_VOUS")
+}
+
+model Societe {
+  idSociete   Int    @id @default(autoincrement()) @map("id_societe")
+  nomSociete  String @unique @map("nom_societe") @db.VarChar(50)
+  telephone   String @unique @db.VarChar(50)
+  email       String @unique @db.VarChar(50)
+  adresse     String @db.VarChar(50)
+  ville       String @db.VarChar(50)
+  codePostal  String @map("code_postal") @db.VarChar(50)
+
+  @@map("SOCIETE")
+}
+
+model Couvre {
+  idUtilisateur Int         @map("id_utilisateur")
+  idZone        Int         @map("id_zone")
+  
+  utilisateur   Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
+  zone          Zone        @relation(fields: [idZone], references: [idZone])
+
+  @@id([idUtilisateur, idZone])
+  @@map("couvre")
+}
