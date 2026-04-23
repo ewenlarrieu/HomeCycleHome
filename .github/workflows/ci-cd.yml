@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_PREFIX: ${{ github.repository }}
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/homecyclehome
 
 jobs:
   # Job 1: Tests et Linting
@@ -80,7 +80,7 @@ jobs:
         id: meta-backend
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/backend
+          images: ${{ env.IMAGE_PREFIX }}/backend
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-
@@ -94,14 +94,14 @@ jobs:
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
           labels: ${{ steps.meta-backend.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/backend:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/backend:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.IMAGE_PREFIX }}/backend:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_PREFIX }}/backend:buildcache,mode=max
 
       - name: Extract metadata (tags, labels) for Frontend
         id: meta-frontend
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend
+          images: ${{ env.IMAGE_PREFIX }}/frontend
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-
@@ -115,8 +115,8 @@ jobs:
           push: true
           tags: ${{ steps.meta-frontend.outputs.tags }}
           labels: ${{ steps.meta-frontend.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.IMAGE_PREFIX }}/frontend:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_PREFIX }}/frontend:buildcache,mode=max
 
   # Job 3: Deploy to VPS
   deploy:

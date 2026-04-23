@@ -22,7 +22,7 @@ services:
 
   # Backend Node.js + Express + Prisma
   backend:
-    image: ghcr.io/${GITHUB_REPOSITORY}/backend:latest
+    image: ghcr.io/ewenlarrieu/homecyclehome/backend:latest
     container_name: homecyclhome-backend
     restart: unless-stopped
     depends_on:
@@ -43,7 +43,7 @@ services:
 
   # Frontend React + Vite + Nginx
   frontend:
-    image: ghcr.io/${GITHUB_REPOSITORY}/frontend:latest
+    image: ghcr.io/ewenlarrieu/homecyclehome/frontend:latest
     container_name: homecyclhome-frontend
     restart: unless-stopped
     depends_on:
