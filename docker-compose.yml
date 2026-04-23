@@ -12,8 +12,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     networks:
       - app-network
     healthcheck:
@@ -37,8 +35,6 @@ services:
       PORT: ${BACKEND_PORT:-3000}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-homecyclhome}?schema=public
       JWT_SECRET: ${JWT_SECRET}
-    ports:
-      - "3000:3000"
     networks:
       - app-network
     healthcheck:
