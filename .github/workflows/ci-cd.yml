@@ -2,13 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/homecyclehome
+    branches: [main]
 
 jobs:
   # Job 1: Tests et Linting
@@ -20,7 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Backend tests
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -38,7 +33,6 @@ jobs:
         working-directory: ./backend
         run: npm run lint || echo "Aucun script de lint configuré"
 
-      # Frontend tests
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm ci
@@ -51,84 +45,14 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-  # Job 2: Build Docker Images
-  build:
-    name: Build Docker Images
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'push'
-
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Backend
-        id: meta-backend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_PREFIX }}/backend
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Backend Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ${{ steps.meta-backend.outputs.tags }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.IMAGE_PREFIX }}/backend:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_PREFIX }}/backend:buildcache,mode=max
-
-      - name: Extract metadata (tags, labels) for Frontend
-        id: meta-frontend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_PREFIX }}/frontend
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Frontend Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: ${{ steps.meta-frontend.outputs.tags }}
-          labels: ${{ steps.meta-frontend.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.IMAGE_PREFIX }}/frontend:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_PREFIX }}/frontend:buildcache,mode=max
-
-  # Job 3: Deploy to VPS
+  # Job 2: Deploy to VPS
   deploy:
     name: Deploy to VPS
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -139,20 +63,22 @@ jobs:
           script: |
             cd /opt/homecyclhome
 
-            # Pull les dernières images
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker compose pull
+            # Récupérer les dernières modifications
+            git pull origin main
 
-            # Arrêter et supprimer les anciens conteneurs
-            docker compose down
+            # Arrêter les anciens conteneurs
+            sudo docker-compose down
 
-            # Démarrer les nouveaux conteneurs
-            docker compose up -d
+            # Rebuilder les images localement
+            sudo docker-compose build
+
+            # Démarrer les conteneurs
+            sudo docker-compose up -d
 
             # Nettoyer les images non utilisées
-            docker image prune -af
+            sudo docker image prune -af
 
             # Vérifier le statut
-            docker compose ps
+            sudo docker-compose ps
 
             echo "Déploiement terminé avec succès!"
