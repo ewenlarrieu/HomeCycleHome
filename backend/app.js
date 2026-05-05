@@ -9,14 +9,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
 // Routes
 app.get("/api/health", async (req, res) => {
   try {
-    // Tester la connexion à la base de données
     await prisma.$queryRaw`SELECT 1`;
     res.status(200).json({
       message: "API is running",
@@ -31,11 +29,6 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-// Importer et monter les routes
-// const userRoutes = require("./routes/users.routes");
-// app.use("/api/users", userRoutes);
-
-// Middleware de gestion d'erreurs (doit être en dernier)
 app.use(errorHandler);
 
 app.listen(PORT, () => {

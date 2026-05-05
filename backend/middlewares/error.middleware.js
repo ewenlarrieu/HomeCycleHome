@@ -1,33 +1,31 @@
-// Middleware de gestion d'erreurs
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack);
 
-  // Erreur Prisma
   if (err.code && err.code.startsWith("P")) {
     return res.status(400).json({
-      error: "Erreur de base de données",
+      status: 400,
       message: err.message,
     });
   }
 
-  // Erreur JWT
   if (err.name === "JsonWebTokenError") {
     return res.status(401).json({
-      error: "Token invalide",
+      status: 401,
+      message: "Token invalide",
     });
   }
 
-  // Erreur de validation
   if (err.name === "ValidationError") {
     return res.status(400).json({
-      error: "Erreur de validation",
+      status: 400,
       message: err.message,
     });
   }
 
-  // Erreur générique
-  res.status(err.status || 500).json({
-    error: err.message || "Une erreur est survenue",
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({
+    status: statusCode,
+    message: err.message || "Une erreur est survenue",
   });
 };
 
