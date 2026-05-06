@@ -1,0 +1,125 @@
+.hero {
+  padding-top: 70px;
+}
+
+.hero-container {
+  background-color: #F9F9F9;
+  border-radius: 20px;
+  border: 1px solid #9797A7;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 1200px;
+  height: 700px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 139px;
+}
+
+.hero-image {
+  width: 600px;
+  height: 480px;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.hero-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 35px;
+  color: #0F172A;
+  width: 356px;
+}
+
+.hero-text .btn {
+  margin-top: 20px;
+  align-self: flex-start;
+}
+
+.hero-desc {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  color: #0F172A;
+  width: 356px;
+}
+
+/* Tablette */
+@media (max-width: 1200px) {
+  .hero-container {
+    width: 95%;
+    height: auto;
+    padding: 48px 32px;
+  }
+
+  .hero-content {
+    gap: 60px;
+  }
+
+  .hero-image {
+    width: 380px;
+    height: auto;
+  }
+
+  .hero-title {
+    font-size: 28px;
+    width: 100%;
+  }
+
+  .hero-desc {
+    font-size: 20px;
+    width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 32px;
+  }
+
+  .hero-container {
+    width: 95%;
+    height: auto;
+    padding: 40px 24px;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 26px;
+    width: 100%;
+  }
+
+  .hero-desc {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .hero-text .btn {
+    align-self: center;
+  }
+}
