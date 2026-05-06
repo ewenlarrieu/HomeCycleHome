@@ -2,7 +2,7 @@ import '../styles/Button.css'
 
 function Button({ label }) {
   return (
-    <button className="btn">{label}</button>
+    <button type="button" className="btn">{label}</button>
   )
 }
 

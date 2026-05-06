@@ -53,8 +53,81 @@
   width: 356px;
 }
 
+/* How it works */
+.how-it-works {
+  padding-top: 80px;
+}
+
+.how-it-works-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 35px;
+  color: #030229;
+  text-align: center;
+}
+
+.how-it-works-cards {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 60px;
+}
+
+.how-it-works-card {
+  width: 350px;
+  height: 450px;
+  background-color: #F9F9F9;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-icon {
+  width: 80px;
+  height: 80px;
+}
+
+.how-it-works-card-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 25px;
+  color: #0F172A;
+}
+
+.how-it-works-card-desc {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #475569;
+}
+
 /* Tablette */
 @media (max-width: 1200px) {
+  .how-it-works-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 0 32px;
+  }
+
+  .how-it-works-card {
+    width: 80%;
+    height: auto;
+    min-height: 350px;
+  }
+
   .hero-container {
     width: 95%;
     height: auto;
@@ -83,6 +156,42 @@
 
 /* Mobile */
 @media (max-width: 768px) {
+  .how-it-works {
+    padding-top: 48px;
+  }
+
+  .how-it-works-title {
+    font-size: 28px;
+    padding: 0 24px;
+  }
+
+  .how-it-works-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0 24px;
+    margin-top: 40px;
+  }
+
+  .how-it-works-card {
+    width: 100%;
+    height: auto;
+    min-height: unset;
+  }
+
+  .how-it-works-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .how-it-works-card-title {
+    font-size: 20px;
+  }
+
+  .how-it-works-card-desc {
+    font-size: 16px;
+  }
+
   .hero {
     padding-top: 32px;
   }
