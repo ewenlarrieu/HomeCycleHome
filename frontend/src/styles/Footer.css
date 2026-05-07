@@ -1,0 +1,115 @@
+    /* Footer */
+    footer {
+        width: 100%;
+        background-color: #0F172A;
+        margin-top: 80px;
+        padding: 30px 80px;
+    }
+
+    .footer-brand {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        font-size: 25px;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .footer-tagline {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .footer-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .footer-link {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        color: #FFFFFF;
+        text-decoration: none;
+    }
+
+    .footer-link:hover {
+        text-decoration: underline;
+    }
+
+    .footer-email {
+        display: block;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        color: #FFFFFF;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 24px;
+    }
+
+    .footer-email:hover {
+        text-decoration: underline;
+    }
+
+    .footer-divider {
+        border: none;
+        border-top: 1px solid #FFFFFF;
+        margin-top: 40px;
+        margin-left: -80px;
+        margin-right: -80px;
+    }
+
+    .footer-copyright {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        color: #FFFFFF;
+        text-align: center;
+        margin-top: 24px;
+    }
+
+    /* Tablette */
+    @media (max-width: 1200px) {
+        footer {
+            padding: 30px 40px;
+        }
+
+        .footer-divider {
+            margin-left: -40px;
+            margin-right: -40px;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        footer {
+            padding: 30px 24px;
+        }
+
+        .footer-brand {
+            font-size: 20px;
+        }
+
+        .footer-tagline {
+            font-size: 16px;
+        }
+
+        .footer-email {
+            font-size: 16px;
+        }
+
+        .footer-copyright {
+            font-size: 16px;
+        }
+
+        .footer-divider {
+            margin-left: -24px;
+            margin-right: -24px;
+        }
+    }

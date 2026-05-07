@@ -1,3 +1,8 @@
+:root {
+  --font: 'Nunito', sans-serif;
+}
+
+/* ── Hero ── */
 .hero {
   padding-top: 70px;
 }
@@ -32,12 +37,21 @@
   gap: 40px;
 }
 
-.hero-title {
-  font-family: 'Nunito', sans-serif;
-  font-weight: 600;
-  font-size: 35px;
+.hero-title,
+.hero-desc {
+  font-family: var(--font);
   color: #0F172A;
   width: 356px;
+}
+
+.hero-title {
+  font-weight: 600;
+  font-size: 35px;
+}
+
+.hero-desc {
+  font-weight: 500;
+  font-size: 25px;
 }
 
 .hero-text .btn {
@@ -45,41 +59,39 @@
   align-self: flex-start;
 }
 
-.hero-desc {
-  font-family: 'Nunito', sans-serif;
-  font-weight: 500;
-  font-size: 25px;
-  color: #0F172A;
-  width: 356px;
-}
-
-/* How it works */
-.how-it-works {
+/* ── Sections ── */
+.how-it-works,
+.advantages,
+.cta,
+.contact {
   padding-top: 80px;
 }
 
-.how-it-works-title {
-  font-family: 'Nunito', sans-serif;
+.section-title {
+  font-family: var(--font);
   font-weight: 700;
   font-size: 35px;
   color: #030229;
   text-align: center;
 }
 
+/* ── Cards communes ── */
+.how-it-works-cards,
+.advantages-grid {
+  margin-top: 60px;
+}
+
 .how-it-works-cards {
   display: flex;
   justify-content: center;
   gap: 50px;
-  margin-top: 60px;
 }
 
-.how-it-works-card {
-  width: 350px;
-  height: 450px;
+.how-it-works-card,
+.advantages-card {
   background-color: #F9F9F9;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,9 +101,16 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.how-it-works-card:hover {
+.how-it-works-card:hover,
+.advantages-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-card {
+  width: 350px;
+  height: 450px;
+  flex-shrink: 0;
 }
 
 .how-it-works-icon {
@@ -99,35 +118,65 @@
   height: 80px;
 }
 
-.how-it-works-card-title {
-  font-family: 'Nunito', sans-serif;
+.card-title {
+  font-family: var(--font);
   font-weight: 600;
   font-size: 25px;
   color: #0F172A;
 }
 
-.how-it-works-card-desc {
-  font-family: 'Nunito', sans-serif;
+.card-desc {
+  font-family: var(--font);
   font-weight: 500;
   font-size: 20px;
   color: #475569;
 }
 
-/* Tablette */
+/* ── Advantages ── */
+.advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 426px);
+  gap: 100px;
+  justify-content: center;
+}
+
+.advantages-card {
+  width: 400px;
+  height: 400px;
+}
+
+.advantages-icon {
+  width: 90px;
+  height: 90px;
+}
+
+/* ── CTA ── */
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cta-desc,
+.contact-desc {
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 30px;
+  color: #687484;
+  text-align: center;
+}
+
+/* ── Contact ── */
+.contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* ── Tablette ── */
 @media (max-width: 1200px) {
-  .how-it-works-cards {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    padding: 0 32px;
-  }
-
-  .how-it-works-card {
-    width: 80%;
-    height: auto;
-    min-height: 350px;
-  }
-
   .hero-container {
     width: 95%;
     height: auto;
@@ -143,55 +192,49 @@
     height: auto;
   }
 
-  .hero-title {
-    font-size: 28px;
-    width: 100%;
-  }
-
+  .hero-title,
   .hero-desc {
-    font-size: 20px;
     width: 100%;
   }
-}
 
-/* Mobile */
-@media (max-width: 768px) {
-  .how-it-works {
-    padding-top: 48px;
-  }
-
-  .how-it-works-title {
-    font-size: 28px;
-    padding: 0 24px;
-  }
+  .hero-title { font-size: 28px; }
+  .hero-desc  { font-size: 20px; }
 
   .how-it-works-cards {
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    padding: 0 24px;
-    margin-top: 40px;
+    gap: 30px;
+    padding: 0 32px;
   }
 
   .how-it-works-card {
-    width: 100%;
+    width: 80%;
     height: auto;
-    min-height: unset;
+    min-height: 350px;
   }
 
-  .how-it-works-icon {
-    width: 60px;
-    height: 60px;
+  .advantages-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 32px;
   }
 
-  .how-it-works-card-title {
-    font-size: 20px;
+  .advantages-card {
+    width: 80%;
+    height: auto;
+    min-height: 300px;
+    margin: 0 auto;
   }
 
-  .how-it-works-card-desc {
-    font-size: 16px;
+  .cta-desc,
+  .contact-desc {
+    font-size: 22px;
+    padding: 0 32px;
   }
+}
 
+/* ── Mobile ── */
+@media (max-width: 768px) {
   .hero {
     padding-top: 32px;
   }
@@ -218,17 +261,61 @@
     text-align: center;
   }
 
-  .hero-title {
-    font-size: 26px;
-    width: 100%;
-  }
-
-  .hero-desc {
-    font-size: 18px;
-    width: 100%;
-  }
+  .hero-title  { font-size: 26px; }
+  .hero-desc   { font-size: 18px; }
 
   .hero-text .btn {
     align-self: center;
+  }
+
+  .how-it-works,
+  .advantages,
+  .cta,
+  .contact {
+    padding-top: 48px;
+  }
+
+  .contact {
+    padding-bottom: 48px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    padding: 0 24px;
+  }
+
+  .how-it-works-cards,
+  .advantages-grid {
+    gap: 24px;
+    padding: 0 24px;
+    margin-top: 40px;
+  }
+
+  .how-it-works-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .how-it-works-card,
+  .advantages-card {
+    width: 100%;
+    min-height: unset;
+  }
+
+  .how-it-works-card { height: auto; }
+
+  .how-it-works-icon,
+  .advantages-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .card-title { font-size: 20px; }
+  .card-desc  { font-size: 16px; }
+
+  .cta-desc,
+  .contact-desc {
+    font-size: 18px;
+    padding: 0 24px;
   }
 }
