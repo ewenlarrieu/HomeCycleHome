@@ -1,8 +1,8 @@
 import '../styles/Button.css'
 
-function Button({ label, type = 'button', form }) {
+function Button({ label, type = 'button', form, onClick }) {
   return (
-    <button type={type} className="btn" form={form}>{label}</button>
+    <button type={type} className="btn" form={form} onClick={onClick}>{label}</button>
   )
 }
 
