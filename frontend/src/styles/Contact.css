@@ -1,0 +1,156 @@
+/* ── Contact page ── */
+.contact-page {
+  padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 80px;
+}
+
+.contact-page-title {
+  font-weight: 700;
+  font-size: 40px;
+  color: #030229;
+  text-align: center;
+}
+
+.contact-page-desc {
+  font-weight: 500;
+  font-size: 30px;
+  color: #687484;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.contact-form-container {
+  width: 769px;
+  height: 750px;
+  background-color: #F9F9F9;
+  border: 1px solid #9797A7;
+  border-radius: 20px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 40px;
+}
+
+.contact-page .btn {
+  margin-top: 40px;
+  width: 240px;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 618px;
+}
+
+.contact-label {
+  font-weight: 600;
+  font-size: 35px;
+  color: #0F172A;
+  margin: 0;
+}
+
+.contact-input {
+  width: 618px;
+  height: 80px;
+  background-color: #FFFFFF;
+  border: 1px solid #9797A7;
+  border-radius: 20px;
+  padding: 0 20px;
+  font-size: 25px;
+  outline: none;
+}
+
+.contact-input::placeholder,
+.contact-textarea::placeholder {
+  color: #9797A7;
+  font-family: inherit;
+}
+
+.contact-textarea {
+  width: 618px;
+  height: 450px;
+  background-color: #FFFFFF;
+  border: 1px solid #9797A7;
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 25px;
+  outline: none;
+  resize: none;
+}
+
+/* ── Tablette ── */
+@media (max-width: 1200px) {
+  .contact-page-title {
+    font-size: 30px;
+    padding: 0 32px;
+  }
+
+  .contact-page-desc {
+    font-size: 22px;
+    padding: 0 32px;
+  }
+
+  .contact-form-container {
+    width: 90%;
+    height: auto;
+    padding: 32px;
+  }
+
+  .contact-field,
+  .contact-input,
+  .contact-textarea {
+    width: 100%;
+  }
+
+  .contact-label {
+    font-size: 28px;
+  }
+
+  .contact-input,
+  .contact-textarea {
+    font-size: 20px;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .contact-page {
+    padding-top: 48px;
+  }
+
+  .contact-page-title {
+    font-size: 26px;
+    padding: 0 24px;
+  }
+
+  .contact-page-desc {
+    font-size: 18px;
+    padding: 0 24px;
+  }
+
+  .contact-form-container {
+    width: 95%;
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .contact-label {
+    font-size: 22px;
+  }
+
+  .contact-input {
+    height: 60px;
+    font-size: 16px;
+  }
+
+  .contact-textarea {
+    height: 280px;
+    font-size: 16px;
+  }
+}

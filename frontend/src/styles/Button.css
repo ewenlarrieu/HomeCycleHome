@@ -1,4 +1,6 @@
 .btn {
+  appearance: none;
+  -webkit-appearance: none;
   height: 63px;
   width: auto;
   padding: 0 30px;
