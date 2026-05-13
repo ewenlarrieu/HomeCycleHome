@@ -1,5 +1,6 @@
 import '../styles/Home.css'
 import Button from '../components/Button'
+import { useNavigate } from 'react-router-dom'
 import HeroImage from '../assets/images/Heroimage.png'
 import CalendarIcon from '../assets/images/calendar.png'
 import PointIcon from '../assets/images/point.png'
@@ -11,6 +12,8 @@ import LockIcon from '../assets/images/lock.png'
 import Button2 from '../components/Button2'
 
 export default function Home() {
+  const navigate = useNavigate()
+
   return (
     <main>
 
@@ -20,7 +23,7 @@ export default function Home() {
             <div className="hero-text">
               <h1 id="hero-title" className="hero-title">Réparez votre vélo sans vous déplacer</h1>
               <p className="hero-desc">Prenez rendez-vous avec un technicien à domicile, choisissez votre forfait d'entretien et suivez facilement vos interventions depuis votre espace client.</p>
-              <Button label="Commencer" />
+              <Button label="Commencer" onClick={() => navigate('/register')} />
             </div>
             <img src={HeroImage} alt="Technicien réparant un vélo à domicile" className="hero-image" />
           </div>
@@ -77,11 +80,11 @@ export default function Home() {
       <section className="cta" aria-labelledby="cta-title">
         <h2 id="cta-title" className="section-title">Besoin d'une réparation pour votre vélo ?</h2>
         <p className="cta-desc">Prenez rendez-vous en quelques clics et profitez d'une intervention à domicile rapide et fiable.</p>
-        <Button label="Prendre rendez-vous" />
+        <Button label="Prendre rendez-vous" onClick={() => navigate('/login')} />
       </section>
 
       <section className="contact" aria-labelledby="contact-title">
-        <Button2 label="Contactez nous" />
+        <Button2 label="Contactez nous" onClick={() => navigate('/contact')} />
         <p className="contact-desc">Une question sur nos interventions ou nos services ? Envoyez-nous un message, notre équipe vous répond rapidement.</p>
       </section>
     </main>

@@ -1,5 +1,5 @@
-/* ── Login page ── */
-.login-page {
+/* ── Register page ── */
+.register-page {
     padding-top: 140px;
     display: flex;
     flex-direction: column;
@@ -7,34 +7,21 @@
     padding-bottom: 80px;
 }
 
-.login-container .btn {
-    width: 240px;
-    height: 63px;
-    margin-top: 10px;
-}
-
-.login-title {
-    font-weight: 700;
-    font-size: 40px;
-    color: #030229;
-    text-align: center;
-}
-
-.login-field {
+.register-field {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 618px;
 }
 
-.login-label {
+.register-label {
     font-weight: 600;
     font-size: 20px;
     color: #0F172A;
     margin: 0;
 }
 
-.login-input {
+.register-input {
     width: 618px;
     height: 65px;
     background-color: #FFFFFF;
@@ -45,26 +32,30 @@
     outline: none;
 }
 
-.login-input::placeholder {
+.register-input::placeholder {
     color: #9797A7;
     font-family: inherit;
 }
 
-.login-forgot {
-    font-weight: 600;
+.register-login-link {
+    font-weight: 500;
     font-size: 30px;
     color: #030229;
-    text-decoration: underline;
-    align-self: center;
+    margin: 0;
+}
+
+.register-container .btn {
+    width: 280px;
+    height: 63px;
     margin-top: 20px;
 }
 
-.login-container {
+.register-container {
     width: 859px;
-    height: 600px;
+    height: 1300px;
     background-color: #F9F9F9;
     border: 1px solid #9797A7;
-    border-radius: 20px;
+    border-radius: 10px;
     margin-top: 40px;
     display: flex;
     flex-direction: column;
@@ -73,64 +64,71 @@
     padding: 40px;
 }
 
+.register-title {
+    font-weight: 700;
+    font-size: 40px;
+    color: #030229;
+    text-align: center;
+}
+
 /* ── Tablette ── */
 @media (max-width: 1200px) {
-    .login-title {
+    .register-title {
         font-size: 30px;
         padding: 0 32px;
     }
 
-    .login-container {
+    .register-container {
         width: 90%;
         height: auto;
         padding: 32px;
     }
 
-    .login-field,
-    .login-input {
+    .register-field,
+    .register-input {
         width: 100%;
     }
 
-    .login-label {
+    .register-label {
         font-size: 28px;
     }
 
-    .login-input {
+    .register-input {
         font-size: 20px;
     }
 
-    .login-forgot {
-        font-size: 24px;
+    .register-login-link {
+        font-size: 22px;
     }
 }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-    .login-page {
+    .register-page {
         padding-top: 120px;
     }
 
-    .login-title {
+    .register-title {
         font-size: 26px;
         padding: 0 24px;
     }
 
-    .login-container {
+    .register-container {
         width: 95%;
         padding: 24px;
         gap: 30px;
     }
 
-    .login-label {
+    .register-label {
         font-size: 22px;
     }
 
-    .login-input {
+    .register-input {
         height: 60px;
         font-size: 16px;
     }
 
-    .login-forgot {
+    .register-login-link {
         font-size: 18px;
     }
 }
