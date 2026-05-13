@@ -1,6 +1,6 @@
 /* ── Hero ── */
 .hero {
-  padding-top: 100px;
+  padding-top: 140px;
 }
 
 .hero-container {
@@ -227,7 +227,7 @@
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .hero {
-    padding-top: 32px;
+    padding-top: 120px;
   }
 
   .hero-container {
@@ -263,7 +263,7 @@
   .advantages,
   .cta,
   .contact {
-    padding-top: 48px;
+    padding-top: 120px;
   }
 
   .contact {
