@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,246 +7,190 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Role {
-  idRole      Int           @id @default(autoincrement()) @map("id_role")
-  libelle     String        @unique @db.VarChar(50)
-  utilisateurs Utilisateur[]
-
-  @@map("ROLE")
+model adresse {
+  id_adresse         Int           @id @default(autoincrement())
+  rue                String        @db.VarChar(50)
+  numero_rue         Int           @db.SmallInt
+  complement_adresse String?       @db.VarChar(50)
+  id_ville           Int
+  id_zone            Int
+  id_utilisateur     Int
+  utilisateur        utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
+  ville              ville         @relation(fields: [id_ville], references: [id_ville], onDelete: NoAction, onUpdate: NoAction)
+  zone               zone          @relation(fields: [id_zone], references: [id_zone], onDelete: NoAction, onUpdate: NoAction)
+  rendez_vous        rendez_vous[]
 }
 
-model Utilisateur {
-  idUtilisateur      Int                @id @default(autoincrement()) @map("id_utilisateur")
-  nom                String             @db.VarChar(50)
-  prenom             String             @db.VarChar(50)
-  email              String             @unique @db.VarChar(150)
-  motDePasse         String             @map("mot_de_passe") @db.VarChar(255)
-  telephone          String             @unique @db.VarChar(50)
-  dateCreation       DateTime           @map("date_creation") @db.Timestamp()
-  statusCompte       Boolean            @map("status_compte")
-  idRole             Int                @map("id_role")
-  
-  role               Role               @relation(fields: [idRole], references: [idRole])
-  adresses           Adresse[]
-  disponibilites     Disponibilite[]
-  cycles             Cycle[]
-  rendezVousClient   RendezVous[]       @relation("ClientRendezVous")
-  rendezVousTechnicien RendezVous[]     @relation("TechnicienRendezVous")
-  zonesCouvertes     Couvre[]
+model couvre {
+  id_utilisateur Int
+  id_zone        Int
+  utilisateur    utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
+  zone           zone        @relation(fields: [id_zone], references: [id_zone], onDelete: NoAction, onUpdate: NoAction)
 
-  @@map("UTILISATEUR")
+  @@id([id_utilisateur, id_zone])
 }
 
-model Ville {
-  idVille     Int       @id @default(autoincrement()) @map("id_ville")
-  nomVille    String?   @map("nom_ville") @db.VarChar(50)
-  codePostal  String?   @map("code_postal") @db.VarChar(50)
-  adresses    Adresse[]
-
-  @@map("VILLE")
+model cycles {
+  id_cycle       Int           @id @default(autoincrement())
+  marque         String        @db.VarChar(50)
+  annee          Int
+  commentaire    String?       @db.VarChar(50)
+  id_type_cycle  Int
+  id_utilisateur Int
+  type_cycle     type_cycle    @relation(fields: [id_type_cycle], references: [id_type_cycle], onDelete: NoAction, onUpdate: NoAction)
+  utilisateur    utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
+  rendez_vous    rendez_vous[]
 }
 
-model Zone {
-  idZone        Int             @id @default(autoincrement()) @map("id_zone")
-  nomZone       String          @map("nom_zone") @db.VarChar(50)
-  codePostal    String          @map("code_postal") @db.VarChar(50)
-  latitude      Decimal?        @db.Decimal(9, 6)
-  longitude     Decimal?        @db.Decimal(9, 6)
-  
-  adresses      Adresse[]
-  disponibilites Disponibilite[]
-  techniciens   Couvre[]
-
-  @@map("ZONE")
+model disponibilites {
+  id_disponibilite Int         @id @default(autoincrement())
+  date_debut       DateTime    @db.Timestamp(6)
+  date_fin         DateTime    @db.Timestamp(6)
+  id_utilisateur   Int
+  utilisateur      utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model Adresse {
-  idAdresse           Int      @id @default(autoincrement()) @map("id_adresse")
-  rue                 String   @db.VarChar(50)
-  numeroRue           Int      @map("numero_rue") @db.SmallInt
-  complementAdresse   String?  @map("complement_adresse") @db.VarChar(50)
-  idVille             Int      @map("id_ville")
-  idZone              Int      @map("id_zone")
-  idUtilisateur       Int      @map("id_utilisateur")
-  
-  ville               Ville    @relation(fields: [idVille], references: [idVille])
-  zone                Zone     @relation(fields: [idZone], references: [idZone])
-  utilisateur         Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
-  rendezVous          RendezVous[]
-
-  @@map("ADRESSE")
+model forfait_intervention {
+  id_service            Int           @id @default(autoincrement())
+  nom_service           String        @unique @db.VarChar(50)
+  prix                  Decimal       @db.Decimal(10, 2)
+  duree_estimee_minutes Int?
+  description           String        @db.VarChar(255)
+  rendez_vous           rendez_vous[]
 }
 
-model Disponibilite {
-  idDisponibilite Int      @id @default(autoincrement()) @map("id_disponibilite")
-  jourSemaine     Int      @map("jour_semaine")
-  heureDebut      DateTime @map("heure_debut") @db.Time()
-  heureFin        DateTime @map("heure_fin") @db.Time()
-  idZone          Int      @map("id_zone")
-  idUtilisateur   Int      @map("id_utilisateur")
-  
-  zone            Zone     @relation(fields: [idZone], references: [idZone])
-  utilisateur     Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
-
-  @@map("DISPONIBILITES")
+model paiement {
+  id_paiement     Int             @id @default(autoincrement())
+  montant         Decimal         @db.Decimal(10, 2)
+  date_paiement   DateTime        @db.Timestamp(6)
+  id_status       Int
+  id_rendez_vous  Int             @unique
+  rendez_vous     rendez_vous     @relation(fields: [id_rendez_vous], references: [id_rendez_vous], onDelete: NoAction, onUpdate: NoAction)
+  status_paiement status_paiement @relation(fields: [id_status], references: [id_status], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model ForfaitIntervention {
-  idService          Int          @id @default(autoincrement()) @map("id_service")
-  nomService         String       @unique @map("nom_service") @db.VarChar(50)
-  prix               Decimal      @db.Decimal(5, 2)
-  dureeEstimeeMinutes Int?        @map("duree_estimee_minutes")
-  description        String       @map("description_") @db.VarChar(255)
-  
-  rendezVous         RendezVous[]
-
-  @@map("FORFAIT_INTERVENTION")
+model photos {
+  id_photo       Int         @id @default(autoincrement())
+  url_photo      String      @unique @db.VarChar(250)
+  commentaire    String?     @db.VarChar(50)
+  date_ajout     DateTime    @db.Timestamp(6)
+  type_photo     String      @db.VarChar(20)
+  id_rendez_vous Int
+  rendez_vous    rendez_vous @relation(fields: [id_rendez_vous], references: [id_rendez_vous], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model TypeCycle {
-  idTypeCycle Int     @id @default(autoincrement()) @map("id_type_cycle")
-  libelle     String? @db.VarChar(50)
-  cycles      Cycle[]
-
-  @@map("TYPE_CYCLE")
-}
-
-model Cycle {
-  idCycle      Int        @id @default(autoincrement()) @map("id_cycle")
-  marque       String     @db.VarChar(50)
-  annee        Int
-  commentaire  String     @db.VarChar(50)
-  idTypeCycle  Int        @map("id_type_cycle")
-  idUtilisateur Int       @map("id_utilisateur")
-  
-  typeCycle    TypeCycle  @relation(fields: [idTypeCycle], references: [idTypeCycle])
-  utilisateur  Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
-  rendezVous   RendezVous[]
-
-  @@map("CYCLES")
-}
-
-model StatusRendezVous {
-  idStatusRendezVous Int          @id @default(autoincrement()) @map("id_status_rendez_vous")
-  libelle            String       @db.VarChar(50)
-  rendezVous         RendezVous[]
-
-  @@map("STATUS_RENDEZ_VOUS")
-}
-
-model RendezVous {
-  idRendezVous        Int               @id @default(autoincrement()) @map("id_rendez_vous")
-  dateRdv             DateTime          @map("date_rdv") @db.Date
-  heureRdv            DateTime          @map("heure_rdv") @db.Time()
-  prix                Decimal           @db.Decimal(5, 2)
-  commentaire         String?           @db.VarChar(50)
-  dureeRdv            Int               @map("duree_rdv")
-  idStatusRendezVous  Int               @map("id_status_rendez_vous")
-  idCycle             Int               @map("id_cycle")
-  idAdresse           Int               @map("id_adresse")
-  idService           Int               @map("id_service")
-  idUtilisateurClient Int?              @map("id_utilisateur")
-  idUtilisateurTechnicien Int           @map("id_utilisateur_1")
-  
-  status              StatusRendezVous  @relation(fields: [idStatusRendezVous], references: [idStatusRendezVous])
-  cycle               Cycle             @relation(fields: [idCycle], references: [idCycle])
-  adresse             Adresse           @relation(fields: [idAdresse], references: [idAdresse])
-  service             ForfaitIntervention @relation(fields: [idService], references: [idService])
-  client              Utilisateur?      @relation("ClientRendezVous", fields: [idUtilisateurClient], references: [idUtilisateur])
-  technicien          Utilisateur       @relation("TechnicienRendezVous", fields: [idUtilisateurTechnicien], references: [idUtilisateur])
-  paiement            Paiement?
-  photos              Photo[]
-  produits            ProduitRendezVous[]
-
-  @@map("RENDEZ_VOUS")
-}
-
-model StatusPaiement {
-  idStatus  Int        @id @default(autoincrement()) @map("id_status")
-  libelle   String     @db.VarChar(50)
-  paiements Paiement[]
-
-  @@map("STATUS_PAIEMENT")
-}
-
-model Paiement {
-  idPaiement    Int             @id @default(autoincrement()) @map("id_paiement")
-  montant       Decimal         @db.Decimal(5, 2)
-  datePaiement  DateTime        @map("date_paiement") @db.Timestamp()
-  idStatus      Int             @map("id_status")
-  idRendezVous  Int             @unique @map("id_rendez_vous")
-  
-  status        StatusPaiement  @relation(fields: [idStatus], references: [idStatus])
-  rendezVous    RendezVous      @relation(fields: [idRendezVous], references: [idRendezVous])
-
-  @@map("PAIEMENT")
-}
-
-model Photo {
-  idPhoto      Int        @id @default(autoincrement()) @map("id_photo")
-  urlPhoto     String     @unique @map("url_photo") @db.VarChar(250)
-  commentaire  String?    @db.VarChar(50)
-  dateAjout    DateTime   @map("date_ajout") @db.Timestamp()
-  idRendezVous Int        @map("id_rendez_vous")
-  
-  rendezVous   RendezVous @relation(fields: [idRendezVous], references: [idRendezVous])
-
-  @@map("PHOTOS")
-}
-
-model Stock {
-  idStock  Int       @id @default(autoincrement()) @map("id_stock")
-  quantite Int
-  produits Produit[]
-
-  @@map("STOCK")
-}
-
-model Produit {
-  idProduit     Int                 @id @default(autoincrement()) @map("id_produit")
-  nomProduit    String              @unique @map("nom_produit") @db.VarChar(50)
-  photoProduit  String              @map("photo_produit") @db.VarChar(50)
-  description   String              @db.VarChar(250)
-  idStock       Int                 @map("id_stock")
-  
-  stock         Stock               @relation(fields: [idStock], references: [idStock])
-  rendezVous    ProduitRendezVous[]
-
-  @@map("PRODUIT")
-}
-
-model ProduitRendezVous {
-  idProduitRendezVous Int        @id @default(autoincrement()) @map("id_produit_rendez_vous")
-  prixUnitaire        Decimal    @map("prix_unitaire") @db.Decimal(10, 2)
+model produit {
+  id_produit          Int                   @id @default(autoincrement())
+  nom_produit         String                @unique @db.VarChar(50)
+  photo_produit       String?               @db.VarChar(50)
+  description         String                @db.VarChar(250)
   quantite            Int
-  idProduit           Int        @map("id_produit")
-  idRendezVous        Int        @map("id_rendez_vous")
-  
-  produit             Produit    @relation(fields: [idProduit], references: [idProduit])
-  rendezVous          RendezVous @relation(fields: [idRendezVous], references: [idRendezVous])
-
-  @@map("PRODUIT_RENDEZ_VOUS")
+  produit_rendez_vous produit_rendez_vous[]
 }
 
-model Societe {
-  idSociete   Int    @id @default(autoincrement()) @map("id_societe")
-  nomSociete  String @unique @map("nom_societe") @db.VarChar(50)
+model produit_rendez_vous {
+  id_produit_rendez_vous Int         @id @default(autoincrement())
+  prix_unitaire          Decimal     @db.Decimal(10, 2)
+  quantite               Int
+  id_produit             Int
+  id_rendez_vous         Int
+  produit                produit     @relation(fields: [id_produit], references: [id_produit], onDelete: NoAction, onUpdate: NoAction)
+  rendez_vous            rendez_vous @relation(fields: [id_rendez_vous], references: [id_rendez_vous], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model rendez_vous {
+  id_rendez_vous                                     Int                   @id @default(autoincrement())
+  date_rdv                                           DateTime              @db.Timestamp(6)
+  commentaire                                        String?               @db.VarChar(50)
+  duree_rdv                                          Int
+  id_status_rendez_vous                              Int
+  id_cycle                                           Int
+  id_adresse                                         Int
+  id_service                                         Int
+  id_client                                          Int?
+  id_technicien                                      Int
+  paiement                                           paiement?
+  photos                                             photos[]
+  produit_rendez_vous                                produit_rendez_vous[]
+  adresse                                            adresse               @relation(fields: [id_adresse], references: [id_adresse], onDelete: NoAction, onUpdate: NoAction)
+  utilisateur_rendez_vous_id_clientToutilisateur     utilisateur?          @relation("rendez_vous_id_clientToutilisateur", fields: [id_client], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
+  cycles                                             cycles                @relation(fields: [id_cycle], references: [id_cycle], onDelete: NoAction, onUpdate: NoAction)
+  forfait_intervention                               forfait_intervention  @relation(fields: [id_service], references: [id_service], onDelete: NoAction, onUpdate: NoAction)
+  status_rendez_vous                                 status_rendez_vous    @relation(fields: [id_status_rendez_vous], references: [id_status_rendez_vous], onDelete: NoAction, onUpdate: NoAction)
+  utilisateur_rendez_vous_id_technicienToutilisateur utilisateur           @relation("rendez_vous_id_technicienToutilisateur", fields: [id_technicien], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model role {
+  id_role     Int           @id @default(autoincrement())
+  libelle     String        @unique @db.VarChar(50)
+  utilisateur utilisateur[]
+}
+
+model societe {
+  id_societe  Int    @id @default(autoincrement())
+  nom_societe String @unique @db.VarChar(50)
   telephone   String @unique @db.VarChar(50)
   email       String @unique @db.VarChar(50)
   adresse     String @db.VarChar(50)
   ville       String @db.VarChar(50)
-  codePostal  String @map("code_postal") @db.VarChar(50)
-
-  @@map("SOCIETE")
+  code_postal String @db.VarChar(50)
 }
 
-model Couvre {
-  idUtilisateur Int         @map("id_utilisateur")
-  idZone        Int         @map("id_zone")
-  
-  utilisateur   Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur])
-  zone          Zone        @relation(fields: [idZone], references: [idZone])
+model status_compte {
+  id_status   Int           @id @default(autoincrement())
+  libelle     String        @db.VarChar(50)
+  utilisateur utilisateur[]
+}
 
-  @@id([idUtilisateur, idZone])
-  @@map("couvre")
+model status_paiement {
+  id_status Int        @id @default(autoincrement())
+  libelle   String     @db.VarChar(50)
+  paiement  paiement[]
+}
+
+model status_rendez_vous {
+  id_status_rendez_vous Int           @id @default(autoincrement())
+  libelle               String        @db.VarChar(50)
+  rendez_vous           rendez_vous[]
+}
+
+model type_cycle {
+  id_type_cycle Int      @id @default(autoincrement())
+  libelle       String   @db.VarChar(50)
+  cycles        cycles[]
+}
+
+model utilisateur {
+  id_utilisateur                                     Int              @id @default(autoincrement())
+  nom                                                String           @db.VarChar(50)
+  prenom                                             String           @db.VarChar(50)
+  email                                              String           @unique @db.VarChar(150)
+  mot_de_passe                                       String           @db.VarChar(255)
+  telephone                                          String           @unique @db.VarChar(50)
+  date_creation                                      DateTime         @db.Timestamp(6)
+  id_status                                          Int
+  id_role                                            Int
+  adresse                                            adresse[]
+  couvre                                             couvre[]
+  cycles                                             cycles[]
+  disponibilites                                     disponibilites[]
+  rendez_vous_rendez_vous_id_clientToutilisateur     rendez_vous[]    @relation("rendez_vous_id_clientToutilisateur")
+  rendez_vous_rendez_vous_id_technicienToutilisateur rendez_vous[]    @relation("rendez_vous_id_technicienToutilisateur")
+  role                                               role             @relation(fields: [id_role], references: [id_role], onDelete: NoAction, onUpdate: NoAction)
+  status_compte                                      status_compte    @relation(fields: [id_status], references: [id_status], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model ville {
+  id_ville    Int       @id @default(autoincrement())
+  nom_ville   String    @db.VarChar(50)
+  code_postal String    @db.VarChar(50)
+  adresse     adresse[]
+}
+
+model zone {
+  id_zone     Int       @id @default(autoincrement())
+  nom_zone    String    @db.VarChar(50)
+  code_postal String    @db.VarChar(50)
+  adresse     adresse[]
+  couvre      couvre[]
 }
