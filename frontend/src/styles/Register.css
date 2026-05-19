@@ -37,6 +37,13 @@
     font-family: inherit;
 }
 
+.register-erreur {
+    color: #e53e3e;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+
 .register-login-link {
     font-weight: 500;
     font-size: 30px;

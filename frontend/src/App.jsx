@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import Contact from './pages/Contact'
+import ClientDashboard from './pages/client/Dashboard'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/client/dashboard" element={<ClientDashboard />} />
       </Routes>
       <Footer />
     </BrowserRouter>

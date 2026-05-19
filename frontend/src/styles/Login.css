@@ -50,6 +50,13 @@
     font-family: inherit;
 }
 
+.login-erreur {
+    color: #e53e3e;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+
 .login-forgot {
     font-weight: 600;
     font-size: 30px;
