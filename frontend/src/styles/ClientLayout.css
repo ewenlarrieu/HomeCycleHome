@@ -1,0 +1,12 @@
+/* ── Client Layout ── */
+.client-layout {
+    min-height: 100vh;
+}
+
+.client-content {
+    padding: 40px;
+    background-color: #F5F5F5;
+    min-height: 100vh;
+    margin-left: 260px;
+}
+

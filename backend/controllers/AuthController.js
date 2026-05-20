@@ -4,10 +4,19 @@ const prisma = require('../config/prisma')
 
 const register = async (req, res, next) => {
   try {
-    const { nom, prenom, email, telephone, mot_de_passe, confirmer_mot_de_passe } = req.body
+    const nom = req.body.nom?.trim()
+    const prenom = req.body.prenom?.trim()
+    const email = req.body.email?.trim().toLowerCase()
+    const telephone = req.body.telephone?.trim()
+    const mot_de_passe = req.body.mot_de_passe
+    const confirmer_mot_de_passe = req.body.confirmer_mot_de_passe
 
     if (!nom || !prenom || !email || !telephone || !mot_de_passe || !confirmer_mot_de_passe) {
       return res.status(400).json({ status: 400, message: 'Tous les champs sont obligatoires' })
+    }
+
+    if (mot_de_passe.length < 8) {
+      return res.status(400).json({ status: 400, message: 'Le mot de passe doit contenir au moins 8 caractères' })
     }
 
     if (mot_de_passe !== confirmer_mot_de_passe) {
@@ -65,7 +74,8 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { email, mot_de_passe } = req.body
+    const email = req.body.email?.trim().toLowerCase()
+    const mot_de_passe = req.body.mot_de_passe
 
     if (!email || !mot_de_passe) {
       return res.status(400).json({ status: 400, message: 'Email et mot de passe obligatoires' })

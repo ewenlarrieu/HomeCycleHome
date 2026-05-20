@@ -1,0 +1,54 @@
+/* ── Client Sidebar ── */
+.client-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background-color: #FFFFFF;
+    box-shadow: 4px 0 6px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.client-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 30px 0;
+    height: 100%;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #9797A7;
+    text-decoration: none;
+}
+
+.sidebar-link.active {
+    background-color: #48CAE4;
+    border-radius: 20px;
+    color: #FFFFFF;
+    width: 163px;
+    height: 45px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.sidebar-link.active img {
+    filter: brightness(0) invert(1);
+}
+
+.sidebar-logout {
+    margin-top: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+}

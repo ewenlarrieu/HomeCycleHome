@@ -7,6 +7,10 @@ const errorHandler = require("./middlewares/error.middleware");
 
 dotenv.config();
 
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET manquant dans .env')
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

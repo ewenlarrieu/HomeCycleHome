@@ -11,3 +11,8 @@ body {
   font-family: 'Nunito', sans-serif;
   background-color: #FAFAFA;
 }
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
