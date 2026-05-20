@@ -10,3 +10,27 @@
     margin-left: 260px;
 }
 
+/* ── Page transition ── */
+.page-transition {
+    animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Responsive mobile ── */
+@media (max-width: 768px) {
+    .client-content {
+        margin-left: 0;
+        padding: 70px 20px 20px;
+    }
+}
+

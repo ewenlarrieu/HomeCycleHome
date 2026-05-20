@@ -9,6 +9,8 @@ import ForgotPassword from './pages/ForgotPassword'
 import Contact from './pages/Contact'
 import ClientDashboard from './pages/client/Dashboard'
 import ClientReserver from './pages/client/Reserver'
+import ClientRendezVous from './pages/client/Rendez-vous'
+import ClientProfile from './pages/client/Profile'
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route element={<ClientLayout />}>
           <Route path="/client/dashboard" element={<ClientDashboard />} />
           <Route path="/client/reserver" element={<ClientReserver />} />
+          <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
+          <Route path="/client/profil" element={<ClientProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>
