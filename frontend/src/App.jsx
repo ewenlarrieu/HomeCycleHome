@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop'
 import PublicLayout from './layouts/PublicLayout'
 import ClientLayout from './layouts/ClientLayout'
+import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -24,11 +25,13 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
-        <Route element={<ClientLayout />}>
-          <Route path="/client/dashboard" element={<ClientDashboard />} />
-          <Route path="/client/reserver" element={<ClientReserver />} />
-          <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
-          <Route path="/client/profil" element={<ClientProfile />} />
+        <Route element={<ProtectedRoute role="client" />}>
+          <Route element={<ClientLayout />}>
+            <Route path="/client/dashboard" element={<ClientDashboard />} />
+            <Route path="/client/reserver" element={<ClientReserver />} />
+            <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
+            <Route path="/client/profil" element={<ClientProfile />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

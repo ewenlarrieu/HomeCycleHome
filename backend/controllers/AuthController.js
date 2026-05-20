@@ -120,4 +120,22 @@ const login = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login }
+const me = async (req, res, next) => {
+  try {
+    const utilisateur = await prisma.utilisateur.findUnique({
+      where: { id_utilisateur: req.user.id_utilisateur },
+      include: { role: true },
+    })
+
+    if (!utilisateur) {
+      return res.status(404).json({ status: 404, message: 'Utilisateur introuvable' })
+    }
+
+    const { mot_de_passe: _, ...utilisateurSansMotDePasse } = utilisateur
+    res.status(200).json(utilisateurSansMotDePasse)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { register, login, me }
