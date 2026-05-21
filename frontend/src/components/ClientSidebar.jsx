@@ -11,8 +11,15 @@ export default function ClientSidebar() {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleDeconnexion = () => {
-    navigate('/login')
+  const handleDeconnexion = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } finally {
+      navigate('/login')
+    }
   }
 
   const closeMenu = () => setIsOpen(false)

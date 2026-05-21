@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const prisma = require('../config/prisma')
+const { sendResetPasswordEmail } = require('../services/email.service')
 
 const register = async (req, res, next) => {
   try {
@@ -138,4 +139,101 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, me }
+const logout = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  })
+  res.status(200).json({ message: 'Déconnexion réussie' })
+}
+
+const forgotPassword = async (req, res, next) => {
+  try {
+    const email = req.body.email?.trim().toLowerCase()
+
+    if (!email) {
+      return res.status(400).json({ status: 400, message: 'Email obligatoire' })
+    }
+
+    const utilisateur = await prisma.utilisateur.findUnique({ where: { email } })
+
+    // Réponse identique que l'email existe ou non (sécurité)
+    if (!utilisateur) {
+      return res.status(200).json({ message: 'Si cet email existe, un lien a été envoyé.' })
+    }
+
+    // Token JWT incluant un fragment du hash du mot de passe actuel
+    const token = jwt.sign(
+      {
+        id_utilisateur: utilisateur.id_utilisateur,
+        purpose: 'reset-password',
+        pwdFragment: utilisateur.mot_de_passe.slice(0, 10),
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    )
+
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`
+    await sendResetPasswordEmail(utilisateur.email, utilisateur.prenom, resetLink)
+
+    res.status(200).json({ message: 'Si cet email existe, un lien a été envoyé.' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token, mot_de_passe, confirmer_mot_de_passe } = req.body
+
+    if (!token || !mot_de_passe || !confirmer_mot_de_passe) {
+      return res.status(400).json({ status: 400, message: 'Tous les champs sont obligatoires' })
+    }
+
+    if (mot_de_passe.length < 8) {
+      return res.status(400).json({ status: 400, message: 'Le mot de passe doit contenir au moins 8 caractères' })
+    }
+
+    if (mot_de_passe !== confirmer_mot_de_passe) {
+      return res.status(400).json({ status: 400, message: 'Les mots de passe ne correspondent pas' })
+    }
+
+    let decoded
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET)
+    } catch {
+      return res.status(400).json({ status: 400, message: 'Lien invalide ou expiré' })
+    }
+
+    if (decoded.purpose !== 'reset-password') {
+      return res.status(400).json({ status: 400, message: 'Lien invalide' })
+    }
+
+    const utilisateur = await prisma.utilisateur.findUnique({
+      where: { id_utilisateur: decoded.id_utilisateur },
+    })
+
+    if (!utilisateur) {
+      return res.status(404).json({ status: 404, message: 'Utilisateur introuvable' })
+    }
+
+    // Vérifie que le mot de passe n'a pas déjà été changé
+    if (utilisateur.mot_de_passe.slice(0, 10) !== decoded.pwdFragment) {
+      return res.status(400).json({ status: 400, message: 'Lien déjà utilisé ou expiré' })
+    }
+
+    const motDePasseHache = await bcrypt.hash(mot_de_passe, 10)
+
+    await prisma.utilisateur.update({
+      where: { id_utilisateur: utilisateur.id_utilisateur },
+      data: { mot_de_passe: motDePasseHache },
+    })
+
+    res.status(200).json({ message: 'Mot de passe réinitialisé avec succès' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { register, login, me, logout, forgotPassword, resetPassword }
