@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop'
 import PublicLayout from './layouts/PublicLayout'
 import ClientLayout from './layouts/ClientLayout'
+import TechnicienLayout from './layouts/TechnicienLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -10,6 +11,10 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Contact from './pages/Contact'
 import ClientDashboard from './pages/client/Dashboard'
+import TechnicienDashboard from './pages/technicien/Dasboard'
+import TechnicienPlanning from './pages/technicien/Planning'
+import TechnicienInterventions from './pages/technicien/Interventions'
+import TechnicienProfile from './pages/technicien/Profile'
 import ClientReserver from './pages/client/Reserver'
 import ClientRendezVous from './pages/client/Rendez-vous'
 import ClientProfile from './pages/client/Profile'
@@ -27,6 +32,15 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
+        <Route element={<ProtectedRoute role="technicien" />}>
+          <Route element={<TechnicienLayout />}>
+            <Route path="/technicien/dashboard" element={<TechnicienDashboard />} />
+            <Route path="/technicien/planning" element={<TechnicienPlanning />} />
+            <Route path="/technicien/interventions" element={<TechnicienInterventions />} />
+            <Route path="/technicien/profil" element={<TechnicienProfile />} />
+          </Route>
+        </Route>
+
         <Route element={<ProtectedRoute role="client" />}>
           <Route element={<ClientLayout />}>
             <Route path="/client/dashboard" element={<ClientDashboard />} />
