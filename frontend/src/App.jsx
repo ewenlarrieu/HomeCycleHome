@@ -3,6 +3,7 @@ import ScrollToTop from './components/ScrollToTop'
 import PublicLayout from './layouts/PublicLayout'
 import ClientLayout from './layouts/ClientLayout'
 import TechnicienLayout from './layouts/TechnicienLayout'
+import AdminLayout from './layouts/AdminLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -12,6 +13,11 @@ import ResetPassword from './pages/ResetPassword'
 import Contact from './pages/Contact'
 import ClientDashboard from './pages/client/Dashboard'
 import TechnicienDashboard from './pages/technicien/Dasboard'
+import AdminDashboard from './pages/admin/Dashboard'
+import AdminUtilisateurs from './pages/admin/Utilisateurs'
+import AdminInterventions from './pages/admin/Interventions'
+import AdminProduits from './pages/admin/Produits'
+import AdminParametres from './pages/admin/Parametres'
 import TechnicienPlanning from './pages/technicien/Planning'
 import TechnicienInterventions from './pages/technicien/Interventions'
 import TechnicienProfile from './pages/technicien/Profile'
@@ -32,6 +38,16 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
+        <Route element={<ProtectedRoute role="admin" />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/utilisateurs" element={<AdminUtilisateurs />} />
+            <Route path="/admin/interventions" element={<AdminInterventions />} />
+            <Route path="/admin/produits" element={<AdminProduits />} />
+            <Route path="/admin/parametres" element={<AdminParametres />} />
+          </Route>
+        </Route>
+
         <Route element={<ProtectedRoute role="technicien" />}>
           <Route element={<TechnicienLayout />}>
             <Route path="/technicien/dashboard" element={<TechnicienDashboard />} />
