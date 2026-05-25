@@ -1,0 +1,184 @@
+/* ── Client Profile ── */
+.profile-page {
+    padding: 0;
+}
+
+.profile-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #030229;
+    margin-bottom: 24px;
+}
+
+.profile-section {
+    margin-top: 80px;
+}
+
+.profile-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #030229;
+    margin-bottom: 20px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-info {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+    color: #030229;
+    margin: 0;
+}
+
+.profile-input {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #030229;
+    background-color: #FFFFFF;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 10px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    cursor: default;
+}
+
+.profile-subtitle--adresses {
+    margin-top: 48px;
+}
+
+.profile-subtitle--cycles {
+    margin-top: 48px;
+}
+
+.profile-cycles {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-cycle-card {
+    background-color: #FFFFFF;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 480px;
+}
+
+.profile-cycle-ligne {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #030229;
+    margin: 0;
+}
+
+.profile-cycle-commentaire {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.profile-adresse-btn {
+    margin-top: 20px;
+}
+
+.profile-adresse-btn .btn {
+    height: 44px;
+    font-size: 16px;
+    padding: 0 20px;
+    border-radius: 12px;
+}
+
+.profile-section--compact {
+    margin-top: 16px;
+}
+
+.profile-adresses {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-adresse-card {
+    background-color: #FFFFFF;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 480px;
+}
+
+.profile-adresse-ligne {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #030229;
+    margin: 0;
+}
+
+.profile-no-adresse {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.profile-save-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.profile-save-btn .btn {
+    height: 56px;
+    font-size: 20px;
+    padding: 0 48px;
+    border-radius: 16px;
+}
+
+.profile-delete-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.profile-delete-btn .btn {
+    height: 56px;
+    font-size: 20px;
+    padding: 0 48px;
+    border-radius: 16px;
+    background-color: #E44848;
+}
+
+.profile-delete-btn .btn:hover {
+    background-color: #c93636;
+}
+
+.profile-loading {
+    color: #9797A7;
+    padding: 20px 0;
+}
