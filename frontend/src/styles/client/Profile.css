@@ -166,6 +166,13 @@
     gap: 16px;
 }
 
+.profile-adresse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
 .profile-adresse-card {
     background-color: #FFFFFF;
     border: 1px solid #9A9A9A;

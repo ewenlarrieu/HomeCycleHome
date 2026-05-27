@@ -2,6 +2,76 @@ import { useEffect, useState } from 'react'
 import '../../styles/client/Profile.css'
 import Button from '../../components/Button'
 
+function AddAdresseModal({ zones, onClose, onAdd }) {
+  const [form, setForm] = useState({ numero_rue: '', rue: '', complement_adresse: '', id_zone: zones[0]?.id_zone ?? '' })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    setError('')
+  }
+
+  const handleSubmit = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/client/adresses`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = await res.json()
+      if (!res.ok) { setError(data.message || 'Une erreur est survenue.'); return }
+      onAdd(data)
+      onClose()
+    } catch {
+      setError('Impossible de contacter le serveur.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="profile-modal-overlay" onClick={onClose}>
+      <div className="profile-modal" onClick={e => e.stopPropagation()}>
+        <h3 className="profile-modal-title">Ajouter une adresse</h3>
+
+        <div className="profile-modal-field">
+          <label className="profile-modal-label">Numéro</label>
+          <input className="profile-modal-input" name="numero_rue" type="number" value={form.numero_rue} onChange={handleChange} placeholder="Ex : 12" />
+        </div>
+        <div className="profile-modal-field">
+          <label className="profile-modal-label">Rue</label>
+          <input className="profile-modal-input" name="rue" value={form.rue} onChange={handleChange} placeholder="Ex : Rue de la Paix" />
+        </div>
+        <div className="profile-modal-field">
+          <label className="profile-modal-label">Complément <span className="profile-modal-optional">(optionnel)</span></label>
+          <input className="profile-modal-input" name="complement_adresse" value={form.complement_adresse} onChange={handleChange} placeholder="Ex : Bât. B, Apt. 3" />
+        </div>
+        <div className="profile-modal-field">
+          <label className="profile-modal-label">Arrondissement</label>
+          <select className="profile-modal-select" name="id_zone" value={form.id_zone} onChange={handleChange}>
+            {zones.map(z => (
+              <option key={z.id_zone} value={z.id_zone}>{z.nom_zone} ({z.code_postal})</option>
+            ))}
+          </select>
+        </div>
+
+        {error && <p className="profile-modal-error">{error}</p>}
+
+        <div className="profile-modal-footer">
+          <button className="profile-modal-btn-cancel" onClick={onClose}>Annuler</button>
+          <button className="profile-modal-btn-confirm" onClick={handleSubmit} disabled={loading}>
+            {loading ? 'Ajout...' : 'Ajouter'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function AddCycleModal({ types, onClose, onAdd }) {
   const [form, setForm] = useState({ nom: '', marque: '', annee: '', id_type_cycle: types[0]?.id_type_cycle ?? '', commentaire: '' })
   const [error, setError] = useState('')
@@ -82,18 +152,21 @@ export default function Profile() {
   const [cyclesData, setCyclesData] = useState([])
   const [editingNomIds, setEditingNomIds] = useState(new Set())
   const [types, setTypes] = useState([])
+  const [zones, setZones] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [saveMessage, setSaveMessage] = useState('')
   const [saveError, setSaveError] = useState('')
   const [showAddCycle, setShowAddCycle] = useState(false)
+  const [showAddAdresse, setShowAddAdresse] = useState(false)
 
   useEffect(() => {
     Promise.all([
       fetch(`${import.meta.env.VITE_API_URL}/client/profil`, { credentials: 'include' }).then(r => r.json()),
       fetch(`${import.meta.env.VITE_API_URL}/client/types-cycles`, { credentials: 'include' }).then(r => r.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/client/zones`, { credentials: 'include' }).then(r => r.json()),
     ])
-      .then(([profilData, typesData]) => {
+      .then(([profilData, typesData, zonesData]) => {
         setProfil(profilData)
         setFormData({ nom: profilData.nom, prenom: profilData.prenom, email: profilData.email, telephone: profilData.telephone ?? '' })
         setCyclesData(profilData.cycles.map(c => ({
@@ -106,6 +179,7 @@ export default function Profile() {
           type_cycle: c.type_cycle,
         })))
         setTypes(typesData)
+        setZones(zonesData)
       })
       .catch(() => setError('Impossible de charger le profil.'))
       .finally(() => setLoading(false))
@@ -182,6 +256,27 @@ export default function Profile() {
     }
   }
 
+  const handleAddAdresse = (newAdresse) => {
+    setProfil(prev => ({ ...prev, adresse: [...prev.adresse, newAdresse] }))
+  }
+
+  const handleDeleteAdresse = async (id) => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/client/adresses/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        setSaveError(data.message || 'Impossible de supprimer cette adresse.')
+        return
+      }
+      setProfil(prev => ({ ...prev, adresse: prev.adresse.filter(a => a.id_adresse !== id) }))
+    } catch {
+      setSaveError('Impossible de contacter le serveur.')
+    }
+  }
+
   const handleAddCycle = (newCycle) => {
     const entry = {
       id_cycle: newCycle.id_cycle,
@@ -231,11 +326,18 @@ export default function Profile() {
           <div className="profile-adresses">
             {profil.adresse.map(adr => (
               <div key={adr.id_adresse} className="profile-adresse-card">
-                <p className="profile-adresse-ligne">{adr.numero_rue} {adr.rue}</p>
-                {adr.complement_adresse && (
-                  <p className="profile-adresse-ligne">{adr.complement_adresse}</p>
-                )}
-                <p className="profile-adresse-ligne">{adr.ville.code_postal} {adr.ville.nom_ville} — {adr.zone.nom_zone}</p>
+                <div className="profile-adresse-header">
+                  <div>
+                    <p className="profile-adresse-ligne">{adr.numero_rue} {adr.rue}</p>
+                    {adr.complement_adresse && (
+                      <p className="profile-adresse-ligne">{adr.complement_adresse}</p>
+                    )}
+                    <p className="profile-adresse-ligne">{adr.ville.code_postal} {adr.ville.nom_ville} — {adr.zone.nom_zone}</p>
+                  </div>
+                  <button className="profile-cycle-btn supprimer" onClick={() => handleDeleteAdresse(adr.id_adresse)}>
+                    Supprimer
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -243,7 +345,7 @@ export default function Profile() {
           <p className="profile-no-adresse">Aucune adresse enregistrée.</p>
         )}
         <div className="profile-adresse-btn">
-          <Button label="Ajouter une nouvelle adresse" />
+          <Button label="Ajouter une nouvelle adresse" onClick={() => setShowAddAdresse(true)} />
         </div>
       </section>
 
@@ -314,6 +416,14 @@ export default function Profile() {
       <div className="profile-delete-btn">
         <Button label="Supprimer mon compte" />
       </div>
+
+      {showAddAdresse && (
+        <AddAdresseModal
+          zones={zones}
+          onClose={() => setShowAddAdresse(false)}
+          onAdd={handleAddAdresse}
+        />
+      )}
 
       {showAddCycle && (
         <AddCycleModal

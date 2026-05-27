@@ -143,6 +143,87 @@ const addCycle = async (req, res, next) => {
   }
 }
 
+const getZones = async (req, res, next) => {
+  try {
+    const zones = await prisma.zone.findMany({
+      select: { id_zone: true, nom_zone: true, code_postal: true },
+      orderBy: { code_postal: 'asc' },
+    })
+    res.status(200).json(zones)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const addAdresse = async (req, res, next) => {
+  try {
+    const { numero_rue, rue, complement_adresse, id_zone } = req.body
+    const id = req.user.id_utilisateur
+
+    if (!numero_rue || !rue || !id_zone) {
+      return res.status(400).json({ status: 400, message: 'Numéro, rue et zone sont obligatoires.' })
+    }
+
+    const zone = await prisma.zone.findUnique({ where: { id_zone: parseInt(id_zone) } })
+    if (!zone) {
+      return res.status(404).json({ status: 404, message: 'Zone introuvable.' })
+    }
+
+    const ville = await prisma.ville.findFirst({ where: { code_postal: zone.code_postal } })
+    if (!ville) {
+      return res.status(404).json({ status: 404, message: 'Aucune ville correspondant à cette zone.' })
+    }
+
+    const adresse = await prisma.adresse.create({
+      data: {
+        numero_rue: parseInt(numero_rue),
+        rue,
+        complement_adresse: complement_adresse || null,
+        id_zone: zone.id_zone,
+        id_ville: ville.id_ville,
+        id_utilisateur: id,
+      },
+      select: {
+        id_adresse: true,
+        numero_rue: true,
+        rue: true,
+        complement_adresse: true,
+        ville: { select: { nom_ville: true, code_postal: true } },
+        zone: { select: { nom_zone: true } },
+      },
+    })
+
+    res.status(201).json(adresse)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const deleteAdresse = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id)
+    const userId = req.user.id_utilisateur
+
+    const adresse = await prisma.adresse.findUnique({
+      where: { id_adresse: id },
+      include: { rendez_vous: true },
+    })
+
+    if (!adresse || adresse.id_utilisateur !== userId) {
+      return res.status(403).json({ status: 403, message: 'Action non autorisée.' })
+    }
+
+    if (adresse.rendez_vous.length > 0) {
+      return res.status(409).json({ status: 409, message: 'Impossible de supprimer une adresse liée à un rendez-vous.' })
+    }
+
+    await prisma.adresse.delete({ where: { id_adresse: id } })
+    res.status(200).json({ message: 'Adresse supprimée.' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 const updateCycle = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id)
@@ -201,4 +282,4 @@ const deleteCycle = async (req, res, next) => {
   }
 }
 
-module.exports = { getProfil, updateProfil, getTypesCycles, addCycle, updateCycle, deleteCycle }
+module.exports = { getProfil, updateProfil, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle }
