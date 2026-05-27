@@ -246,6 +246,31 @@
 .modal-btn-confirm:hover { background-color: #2bb8d4; }
 .modal-btn-cancel:hover { background-color: #F5F5F5; }
 
+.modal-input {
+    height: 44px;
+    border: 1px solid #9797A7;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #030229;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-input::placeholder {
+    color: #9797A7;
+}
+
+.modal-error {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e53e3e;
+    margin: 0;
+}
+
 /* ── Tablette ── */
 @media (max-width: 1200px) {
     .utilisateurs-title {

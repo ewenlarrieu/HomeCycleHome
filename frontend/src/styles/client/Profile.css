@@ -72,31 +72,77 @@
     gap: 16px;
 }
 
-.profile-cycle-card {
-    background-color: #FFFFFF;
-    border: 1px solid #9A9A9A;
-    border-radius: 10px;
-    padding: 14px 18px;
+.profile-cycle-item {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    max-width: 480px;
+    gap: 16px;
 }
 
-.profile-cycle-ligne {
+.profile-cycles {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.profile-cycle-grid {
+    margin-top: 0;
+}
+
+.profile-input--textarea {
+    height: 90px;
+    padding: 10px 14px;
+    resize: none;
+    line-height: 1.5;
+}
+
+.profile-cycle-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-cycle-nom {
     font-family: 'Nunito', sans-serif;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 25px;
     color: #030229;
     margin: 0;
 }
 
-.profile-cycle-commentaire {
+.profile-cycle-nom-input {
+    font-size: 20px;
+    font-weight: 700;
+    max-width: 320px;
+}
+
+.profile-cycle-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.profile-cycle-btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 20px;
     font-family: 'Nunito', sans-serif;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 14px;
-    color: #9797A7;
-    margin: 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.profile-cycle-btn:hover {
+    opacity: 0.8;
+}
+
+.profile-cycle-btn.modifier {
+    background-color: #48CAE4;
+    color: #FFFFFF;
+}
+
+.profile-cycle-btn.supprimer {
+    background-color: #E44848;
+    color: #FFFFFF;
 }
 
 .profile-adresse-btn {
@@ -149,8 +195,26 @@
 
 .profile-save-btn {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
     margin-top: 60px;
+}
+
+.profile-save-success {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #22c55e;
+    margin: 0;
+}
+
+.profile-save-error {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #E44848;
+    margin: 0;
 }
 
 .profile-save-btn .btn {
@@ -176,6 +240,134 @@
 
 .profile-delete-btn .btn:hover {
     background-color: #c93636;
+}
+
+/* ── Modal ajout cycle ── */
+.profile-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-modal {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    padding: 32px;
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-modal-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #030229;
+    margin: 0;
+}
+
+.profile-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-modal-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #030229;
+}
+
+.profile-modal-optional {
+    font-weight: 400;
+    color: #9797A7;
+}
+
+.profile-modal-input {
+    height: 44px;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #030229;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.profile-modal-input::placeholder {
+    color: #9797A7;
+}
+
+.profile-modal-select {
+    height: 44px;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #030229;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+}
+
+.profile-modal-error {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #E44848;
+    margin: 0;
+}
+
+.profile-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.profile-modal-btn-cancel {
+    padding: 10px 24px;
+    background: none;
+    border: 1px solid #9797A7;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #9797A7;
+    cursor: pointer;
+}
+
+.profile-modal-btn-cancel:hover { background-color: #F5F5F5; }
+
+.profile-modal-btn-confirm {
+    padding: 10px 24px;
+    background-color: #48CAE4;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.profile-modal-btn-confirm:hover { background-color: #2bb8d4; }
+.profile-modal-btn-confirm:disabled { opacity: 0.6; cursor: default; }
+
+@media (max-width: 768px) {
+    .profile-modal {
+        width: 90%;
+        padding: 24px;
+    }
 }
 
 .profile-loading {

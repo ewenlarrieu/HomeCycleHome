@@ -1,0 +1,232 @@
+/* ── Admin Détail Utilisateur ── */
+.details-page {
+    padding: 0;
+}
+
+.details-back {
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.details-back .btn {
+    height: 40px;
+    font-size: 15px;
+    padding: 0 20px;
+    border-radius: 10px;
+}
+
+.details-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+    color: #030229;
+    margin-bottom: 16px;
+}
+
+.details-username {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #030229;
+    margin-bottom: 12px;
+}
+
+.details-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.details-role {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    background-color: #EBF8FF;
+    color: #48CAE4;
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-transform: capitalize;
+}
+
+.details-status {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.details-status.actif {
+    background-color: #F0FFF4;
+    color: #38a169;
+}
+
+.details-status.inactif {
+    background-color: #FFF5F5;
+    color: #e53e3e;
+}
+
+.details-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #030229;
+    margin-bottom: 20px;
+}
+
+.details-section {
+    margin-top: 16px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.details-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.details-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #030229;
+    margin: 0;
+}
+
+.details-input {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #030229;
+    background-color: #FFFFFF;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 10px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.details-subtitle--cycles {
+    margin-top: 40px;
+}
+
+.details-section--compact {
+    margin-top: 16px;
+}
+
+.details-cycles {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.details-cycle-card {
+    background-color: #FFFFFF;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 480px;
+}
+
+.details-cycle-ligne {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #030229;
+    margin: 0;
+}
+
+.details-cycle-commentaire {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.details-cycle-btn {
+    margin-top: 20px;
+}
+
+.details-cycle-btn .btn {
+    height: 44px;
+    font-size: 16px;
+    padding: 0 20px;
+    border-radius: 12px;
+}
+
+.details-no-data {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.details-save {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 48px;
+}
+
+.details-btn-save {
+    height: 48px;
+    padding: 0 32px;
+    background-color: #48CAE4;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.details-btn-save:hover {
+    background-color: #2bb8d4;
+}
+
+.details-save-success {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #38a169;
+    margin: 0;
+}
+
+.details-save-error {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #e53e3e;
+    margin: 0;
+}
+
+.details-loading {
+    color: #9797A7;
+    padding: 20px 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .details-title {
+        font-size: 24px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+}

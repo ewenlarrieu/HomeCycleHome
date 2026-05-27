@@ -37,6 +37,7 @@ model cycles {
   commentaire    String?       @db.VarChar(50)
   id_type_cycle  Int
   id_utilisateur Int
+  nom            String        @db.VarChar(50)
   type_cycle     type_cycle    @relation(fields: [id_type_cycle], references: [id_type_cycle], onDelete: NoAction, onUpdate: NoAction)
   utilisateur    utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: NoAction, onUpdate: NoAction)
   rendez_vous    rendez_vous[]

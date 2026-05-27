@@ -15,6 +15,7 @@ import ClientDashboard from './pages/client/Dashboard'
 import TechnicienDashboard from './pages/technicien/Dasboard'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminUtilisateurs from './pages/admin/Utilisateurs'
+import AdminDetailsUtilisateurs from './pages/admin/DetailsUtilisateurs'
 import AdminInterventions from './pages/admin/Interventions'
 import AdminProduits from './pages/admin/Produits'
 import AdminParametres from './pages/admin/Parametres'
@@ -42,6 +43,7 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/utilisateurs" element={<AdminUtilisateurs />} />
+            <Route path="/admin/utilisateurs/:id" element={<AdminDetailsUtilisateurs />} />
             <Route path="/admin/interventions" element={<AdminInterventions />} />
             <Route path="/admin/produits" element={<AdminProduits />} />
             <Route path="/admin/parametres" element={<AdminParametres />} />

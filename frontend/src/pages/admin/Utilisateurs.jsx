@@ -2,6 +2,78 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/admin/Utilisateurs.css'
 
+function CreateModal({ role, onClose, onCreate }) {
+  const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', mot_de_passe: '' })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    setError('')
+  }
+
+  const handleSubmit = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/utilisateurs`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, role }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setError(data.message || 'Une erreur est survenue.'); return }
+      onCreate(data)
+      onClose()
+    } catch {
+      setError('Impossible de contacter le serveur.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const label = role === 'client' ? 'un client' : 'un technicien'
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <h3 className="modal-title">Ajouter {label}</h3>
+
+        <div className="modal-field">
+          <label className="modal-label">Nom</label>
+          <input className="modal-input" name="nom" value={form.nom} onChange={handleChange} placeholder="Nom" />
+        </div>
+        <div className="modal-field">
+          <label className="modal-label">Prénom</label>
+          <input className="modal-input" name="prenom" value={form.prenom} onChange={handleChange} placeholder="Prénom" />
+        </div>
+        <div className="modal-field">
+          <label className="modal-label">Email</label>
+          <input className="modal-input" name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" />
+        </div>
+        <div className="modal-field">
+          <label className="modal-label">Téléphone</label>
+          <input className="modal-input" name="telephone" value={form.telephone} onChange={handleChange} placeholder="Téléphone" />
+        </div>
+        <div className="modal-field">
+          <label className="modal-label">Mot de passe</label>
+          <input className="modal-input" name="mot_de_passe" type="password" value={form.mot_de_passe} onChange={handleChange} placeholder="8 caractères minimum" />
+        </div>
+
+        {error && <p className="modal-error">{error}</p>}
+
+        <div className="modal-footer">
+          <button className="modal-btn-cancel" onClick={onClose}>Annuler</button>
+          <button className="modal-btn-confirm" onClick={handleSubmit} disabled={loading}>
+            {loading ? 'Création...' : 'Créer'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ActionModal({ utilisateur, onClose, onUpdate }) {
   const [role, setRole] = useState(utilisateur.role.libelle)
   const [loading, setLoading] = useState(false)
@@ -94,6 +166,7 @@ export default function Utilisateurs() {
   const [techniciens, setTechniciens] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedUser, setSelectedUser] = useState(null)
+  const [createRole, setCreateRole] = useState(null)
   const [searchClient, setSearchClient] = useState('')
   const [searchTechnicien, setSearchTechnicien] = useState('')
 
@@ -128,6 +201,11 @@ export default function Utilisateurs() {
     })
   }
 
+  const handleCreate = (newUser) => {
+    if (newUser.role.libelle === 'client') setClients(prev => [...prev, newUser])
+    else setTechniciens(prev => [...prev, newUser])
+  }
+
   if (loading) return <p className="utilisateurs-loading">Chargement...</p>
 
   return (
@@ -144,7 +222,7 @@ export default function Utilisateurs() {
             value={searchClient}
             onChange={e => setSearchClient(e.target.value)}
           />
-          <button className="btn-table">Ajouter un client</button>
+          <button className="btn-table" onClick={() => setCreateRole('client')}>Ajouter un client</button>
         </div>
         <div className="utilisateurs-container">
           <table className="utilisateurs-table">
@@ -171,7 +249,7 @@ export default function Utilisateurs() {
             value={searchTechnicien}
             onChange={e => setSearchTechnicien(e.target.value)}
           />
-          <button className="btn-table">Ajouter un technicien</button>
+          <button className="btn-table" onClick={() => setCreateRole('technicien')}>Ajouter un technicien</button>
         </div>
         <div className="utilisateurs-container">
           <table className="utilisateurs-table">
@@ -193,6 +271,14 @@ export default function Utilisateurs() {
           utilisateur={selectedUser}
           onClose={() => setSelectedUser(null)}
           onUpdate={handleUpdate}
+        />
+      )}
+
+      {createRole && (
+        <CreateModal
+          role={createRole}
+          onClose={() => setCreateRole(null)}
+          onCreate={handleCreate}
         />
       )}
     </main>
