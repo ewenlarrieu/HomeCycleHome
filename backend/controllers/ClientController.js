@@ -143,6 +143,24 @@ const addCycle = async (req, res, next) => {
   }
 }
 
+const getForfaits = async (req, res, next) => {
+  try {
+    const forfaits = await prisma.forfait_intervention.findMany({
+      select: {
+        id_service: true,
+        nom_service: true,
+        prix: true,
+        duree_estimee_minutes: true,
+        description: true,
+      },
+      orderBy: { nom_service: 'asc' },
+    })
+    res.status(200).json(forfaits)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const getZones = async (req, res, next) => {
   try {
     const zones = await prisma.zone.findMany({
@@ -282,4 +300,4 @@ const deleteCycle = async (req, res, next) => {
   }
 }
 
-module.exports = { getProfil, updateProfil, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle }
+module.exports = { getProfil, updateProfil, getForfaits, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle }

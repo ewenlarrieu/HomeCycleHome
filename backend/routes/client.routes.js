@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { getProfil, updateProfil, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle } = require('../controllers/ClientController')
+const { getProfil, updateProfil, getForfaits, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle } = require('../controllers/ClientController')
 const { authenticateToken, authorizeRole } = require('../middlewares/auth.middleware')
 
+router.get('/forfaits', authenticateToken, authorizeRole('client'), getForfaits)
 router.get('/profil', authenticateToken, authorizeRole('client'), getProfil)
 router.put('/profil', authenticateToken, authorizeRole('client'), updateProfil)
 router.get('/zones', authenticateToken, authorizeRole('client'), getZones)

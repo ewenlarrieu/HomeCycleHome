@@ -1,0 +1,150 @@
+/* ── Client Réserver ── */
+.reserver-page {
+    padding: 0;
+}
+
+.reserver-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #030229;
+    margin-bottom: 24px;
+}
+
+.reserver-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #030229;
+    margin-bottom: 24px;
+}
+
+.reserver-container {
+    background-color: #FFFFFF;
+    border: 1px solid #808093;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.reserver-step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.reserver-step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #48CAE4;
+    color: #FFFFFF;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.reserver-step-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #030229;
+}
+
+.reserver-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.reserver-card {
+    background-color: #FFFFFF;
+    border: 2px solid #EBEBEB;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reserver-card:hover {
+    border-color: #48CAE4;
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.15);
+}
+
+.reserver-card.selected {
+    border-color: #48CAE4;
+    background-color: #F0FAFD;
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.2);
+}
+
+.reserver-card-nom {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #030229;
+    margin: 0;
+}
+
+.reserver-card-description {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #9797A7;
+    margin: 0;
+    flex: 1;
+}
+
+.reserver-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.reserver-card-prix {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #48CAE4;
+}
+
+.reserver-card-duree {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #9797A7;
+    background-color: #F5F5F5;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.reserver-loading {
+    font-family: 'Nunito', sans-serif;
+    color: #9797A7;
+    padding: 20px 0;
+}
+
+/* ── Tablette ── */
+@media (max-width: 1200px) {
+    .reserver-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+    .reserver-title {
+        font-size: 24px;
+    }
+
+    .reserver-grid {
+        grid-template-columns: 1fr;
+    }
+}
