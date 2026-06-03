@@ -1,0 +1,143 @@
+/* ── Client Récapitulatif ── */
+.recap-page {
+    padding: 0;
+}
+
+.recap-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #030229;
+    margin-bottom: 8px;
+}
+
+.recap-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #9797A7;
+    margin-bottom: 24px;
+}
+
+.recap-container {
+    background-color: #FFFFFF;
+    border: 1px solid #808093;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.recap-section {
+    padding: 8px 0;
+}
+
+.recap-section-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #9797A7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 10px 0;
+}
+
+.recap-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recap-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #030229;
+}
+
+.recap-value {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #48CAE4;
+}
+
+.recap-info {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: #030229;
+    margin: 0 0 4px 0;
+}
+
+.recap-info--muted {
+    font-weight: 400;
+    font-size: 15px;
+    color: #9797A7;
+}
+
+.recap-missing {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: #E44848;
+    margin: 0;
+}
+
+.recap-divider {
+    height: 1px;
+    background-color: #EBEBEB;
+    margin: 16px 0;
+}
+
+.recap-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+}
+
+.recap-btn-retour {
+    background: none;
+    border: 2px solid #808093;
+    border-radius: 10px;
+    padding: 0 24px;
+    height: 40px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #030229;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.recap-btn-retour:hover {
+    border-color: #030229;
+}
+
+.recap-error {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #E44848;
+    text-align: center;
+    margin: 16px 0 0 0;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+    .recap-title {
+        font-size: 24px;
+    }
+
+    .recap-subtitle {
+        font-size: 16px;
+    }
+
+    .recap-actions {
+        flex-direction: column-reverse;
+        gap: 12px;
+    }
+
+    .recap-btn-retour {
+        width: 100%;
+    }
+}

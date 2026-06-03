@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { getProfil, updateProfil, getForfaits, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle } = require('../controllers/ClientController')
+const { getProfil, updateProfil, getCreneaux, getForfaits, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle, createRendezVous, getRendezVous, annulerRendezVous } = require('../controllers/ClientController')
 const { authenticateToken, authorizeRole } = require('../middlewares/auth.middleware')
 
+router.get('/creneaux', authenticateToken, authorizeRole('client'), getCreneaux)
 router.get('/forfaits', authenticateToken, authorizeRole('client'), getForfaits)
 router.get('/profil', authenticateToken, authorizeRole('client'), getProfil)
 router.put('/profil', authenticateToken, authorizeRole('client'), updateProfil)
@@ -13,5 +14,8 @@ router.get('/types-cycles', authenticateToken, authorizeRole('client'), getTypes
 router.post('/cycles', authenticateToken, authorizeRole('client'), addCycle)
 router.put('/cycles/:id', authenticateToken, authorizeRole('client'), updateCycle)
 router.delete('/cycles/:id', authenticateToken, authorizeRole('client'), deleteCycle)
+router.get('/rendez-vous', authenticateToken, authorizeRole('client'), getRendezVous)
+router.post('/rendez-vous', authenticateToken, authorizeRole('client'), createRendezVous)
+router.put('/rendez-vous/:id/annuler', authenticateToken, authorizeRole('client'), annulerRendezVous)
 
 module.exports = router

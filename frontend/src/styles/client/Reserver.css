@@ -125,10 +125,166 @@
     border-radius: 20px;
 }
 
+.reserver-container--top {
+    margin-top: 24px;
+}
+
+.reserver-empty {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.reserver-creneau-selected {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #030229;
+    margin-top: 16px;
+}
+
+.reserver-adresse-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reserver-adresse-card {
+    background-color: #FFFFFF;
+    border: 2px solid #EBEBEB;
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reserver-adresse-card:hover {
+    border-color: #48CAE4;
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.15);
+}
+
+.reserver-adresse-card.selected {
+    border-color: #48CAE4;
+    background-color: #F0FAFD;
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.2);
+}
+
+.reserver-adresse-rue {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #030229;
+    margin: 0 0 4px 0;
+}
+
+.reserver-adresse-ville {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.reserver-adresse-footer {
+    margin-top: 16px;
+}
+
+.reserver-adresse-footer .btn {
+    height: 40px;
+    font-size: 14px;
+    padding: 0 16px;
+    border-radius: 10px;
+}
+
+.reserver-cycle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reserver-cycle-card {
+    background-color: #FFFFFF;
+    border: 2px solid #EBEBEB;
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reserver-cycle-card:hover {
+    border-color: #48CAE4;
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.15);
+}
+
+.reserver-cycle-card.selected {
+    border-color: #48CAE4;
+    background-color: #F0FAFD;
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.2);
+}
+
+.reserver-cycle-nom {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #030229;
+    margin: 0 0 4px 0;
+}
+
+.reserver-cycle-details {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.reserver-commentaire {
+    width: 100%;
+    min-height: 140px;
+    border: 1px solid #9A9A9A;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #030229;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.reserver-commentaire::placeholder {
+    color: #9797A7;
+}
+
+.reserver-commentaire:focus {
+    border-color: #48CAE4;
+}
+
 .reserver-loading {
     font-family: 'Nunito', sans-serif;
     color: #9797A7;
     padding: 20px 0;
+}
+
+.reserver-submit-error {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #E44848;
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 0;
+}
+
+.reserver-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
 
 /* ── Tablette ── */
@@ -146,5 +302,28 @@
 
     .reserver-grid {
         grid-template-columns: 1fr;
+    }
+
+    .fc {
+        font-size: 12px;
+    }
+
+    .fc .fc-toolbar {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 14px;
+    }
+
+    .fc .fc-button {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .fc .fc-timegrid-slot {
+        height: 32px;
     }
 }

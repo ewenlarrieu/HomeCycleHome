@@ -143,6 +143,43 @@ const addCycle = async (req, res, next) => {
   }
 }
 
+const getCreneaux = async (req, res, next) => {
+  try {
+    const { id_zone } = req.query
+
+    const where = { date_debut: { gte: new Date() } }
+
+    if (id_zone) {
+      const techniciensDansZone = await prisma.couvre.findMany({
+        where: { id_zone: parseInt(id_zone) },
+        select: { id_utilisateur: true },
+      })
+      const ids = techniciensDansZone.map(c => c.id_utilisateur)
+      where.id_utilisateur = { in: ids }
+    }
+
+    const disponibilites = await prisma.disponibilites.findMany({
+      where,
+      include: {
+        utilisateur: { select: { prenom: true, nom: true } },
+      },
+      orderBy: { date_debut: 'asc' },
+    })
+
+    const events = disponibilites.map(d => ({
+      id: d.id_disponibilite,
+      title: `${d.utilisateur.prenom} ${d.utilisateur.nom}`,
+      start: d.date_debut,
+      end: d.date_fin,
+      id_technicien: d.id_utilisateur,
+    }))
+
+    res.status(200).json(events)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const getForfaits = async (req, res, next) => {
   try {
     const forfaits = await prisma.forfait_intervention.findMany({
@@ -300,4 +337,114 @@ const deleteCycle = async (req, res, next) => {
   }
 }
 
-module.exports = { getProfil, updateProfil, getForfaits, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle }
+const createRendezVous = async (req, res, next) => {
+  try {
+    const { id_disponibilite, id_service, id_cycle, id_adresse, commentaire } = req.body
+    const id_client = req.user.id_utilisateur
+
+    if (!id_disponibilite || !id_service || !id_cycle || !id_adresse) {
+      return res.status(400).json({ status: 400, message: 'Tous les champs obligatoires doivent être renseignés.' })
+    }
+
+    const disponibilite = await prisma.disponibilites.findUnique({ where: { id_disponibilite: parseInt(id_disponibilite) } })
+    if (!disponibilite) {
+      return res.status(404).json({ status: 404, message: 'Créneau introuvable ou déjà réservé.' })
+    }
+
+    const forfait = await prisma.forfait_intervention.findUnique({ where: { id_service: parseInt(id_service) } })
+    if (!forfait) {
+      return res.status(404).json({ status: 404, message: 'Forfait introuvable.' })
+    }
+
+    const statusEnAttente = await prisma.status_rendez_vous.findFirst({ where: { libelle: 'à venir' } })
+    if (!statusEnAttente) {
+      return res.status(500).json({ status: 500, message: 'Statut rendez-vous introuvable.' })
+    }
+
+    const rdv = await prisma.rendez_vous.create({
+      data: {
+        date_rdv: disponibilite.date_debut,
+        commentaire: commentaire ? commentaire.substring(0, 50) : null,
+        duree_rdv: forfait.duree_estimee_minutes ?? 60,
+        id_status_rendez_vous: statusEnAttente.id_status_rendez_vous,
+        id_cycle: parseInt(id_cycle),
+        id_adresse: parseInt(id_adresse),
+        id_service: parseInt(id_service),
+        id_client,
+        id_technicien: disponibilite.id_utilisateur,
+      },
+    })
+
+    await prisma.disponibilites.delete({ where: { id_disponibilite: parseInt(id_disponibilite) } })
+
+    res.status(201).json(rdv)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const getRendezVous = async (req, res, next) => {
+  try {
+    const id_client = req.user.id_utilisateur
+
+    const rdvs = await prisma.rendez_vous.findMany({
+      where: { id_client },
+      include: {
+        forfait_intervention: { select: { nom_service: true, prix: true, duree_estimee_minutes: true } },
+        adresse: {
+          select: {
+            numero_rue: true,
+            rue: true,
+            complement_adresse: true,
+            ville: { select: { nom_ville: true, code_postal: true } },
+            zone: { select: { nom_zone: true } },
+          },
+        },
+        cycles: { select: { nom: true, marque: true, annee: true, type_cycle: { select: { libelle: true } } } },
+        utilisateur_rendez_vous_id_technicienToutilisateur: { select: { prenom: true, nom: true } },
+        status_rendez_vous: { select: { libelle: true } },
+      },
+      orderBy: { date_rdv: 'desc' },
+    })
+
+    res.status(200).json(rdvs)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const annulerRendezVous = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id)
+    const id_client = req.user.id_utilisateur
+
+    const rdv = await prisma.rendez_vous.findUnique({
+      where: { id_rendez_vous: id },
+      include: { status_rendez_vous: { select: { libelle: true } } },
+    })
+
+    if (!rdv || rdv.id_client !== id_client) {
+      return res.status(403).json({ status: 403, message: 'Action non autorisée.' })
+    }
+
+    if (rdv.status_rendez_vous.libelle !== 'à venir') {
+      return res.status(400).json({ status: 400, message: 'Seul un rendez-vous à venir peut être annulé.' })
+    }
+
+    const statusAnnule = await prisma.status_rendez_vous.findFirst({ where: { libelle: 'annulé' } })
+    if (!statusAnnule) {
+      return res.status(500).json({ status: 500, message: 'Statut annulé introuvable.' })
+    }
+
+    await prisma.rendez_vous.update({
+      where: { id_rendez_vous: id },
+      data: { id_status_rendez_vous: statusAnnule.id_status_rendez_vous },
+    })
+
+    res.status(200).json({ message: 'Rendez-vous annulé.' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { getProfil, updateProfil, getCreneaux, getForfaits, getZones, addAdresse, deleteAdresse, getTypesCycles, addCycle, updateCycle, deleteCycle, createRendezVous, getRendezVous, annulerRendezVous }

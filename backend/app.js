@@ -36,9 +36,11 @@ app.use(cookieParser());
 const authRoutes = require('./routes/auth.routes')
 const adminRoutes = require('./routes/admin.routes')
 const clientRoutes = require('./routes/client.routes')
+const technicienRoutes = require('./routes/technicien.routes')
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/admin', adminRoutes)
 app.use('/api/v1/client', clientRoutes)
+app.use('/api/v1/technicien', technicienRoutes)
 
 app.get("/api/health", async (req, res) => {
   try {

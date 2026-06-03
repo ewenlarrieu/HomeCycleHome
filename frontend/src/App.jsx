@@ -23,6 +23,7 @@ import TechnicienPlanning from './pages/technicien/Planning'
 import TechnicienInterventions from './pages/technicien/Interventions'
 import TechnicienProfile from './pages/technicien/Profile'
 import ClientReserver from './pages/client/Reserver'
+import ClientRecapitulatif from './pages/client/Recapitulatif'
 import ClientRendezVous from './pages/client/Rendez-vous'
 import ClientProfile from './pages/client/Profile'
 
@@ -63,6 +64,7 @@ function App() {
           <Route element={<ClientLayout />}>
             <Route path="/client/dashboard" element={<ClientDashboard />} />
             <Route path="/client/reserver" element={<ClientReserver />} />
+            <Route path="/client/recapitulatif" element={<ClientRecapitulatif />} />
             <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
             <Route path="/client/profil" element={<ClientProfile />} />
           </Route>

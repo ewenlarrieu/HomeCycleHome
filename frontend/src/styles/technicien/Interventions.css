@@ -1,0 +1,229 @@
+/* ── Technicien Interventions ── */
+.interv-page {
+    padding: 0;
+}
+
+.interv-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #030229;
+    margin-bottom: 24px;
+}
+
+.interv-section {
+    margin-bottom: 40px;
+}
+
+.interv-section-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #030229;
+    margin-bottom: 16px;
+}
+
+.interv-empty {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #9797A7;
+}
+
+.interv-loading {
+    font-family: 'Nunito', sans-serif;
+    color: #9797A7;
+    padding: 20px 0;
+}
+
+.interv-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.interv-card {
+    background-color: #FFFFFF;
+    border: 1px solid #808093;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.interv-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.interv-card-service {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #030229;
+    margin: 0 0 4px 0;
+}
+
+.interv-card-date {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.interv-status-select {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.interv-status--à-venir {
+    background-color: #E8F7FB;
+    color: #48CAE4;
+}
+
+.interv-status--en-cours {
+    background-color: #FFF4E0;
+    color: #F4A623;
+}
+
+.interv-status--terminé {
+    background-color: #E8F5E9;
+    color: #4CAF50;
+}
+
+.interv-card-divider {
+    height: 1px;
+    background-color: #EBEBEB;
+    margin: 16px 0;
+}
+
+.interv-card-body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.interv-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.interv-card-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #9797A7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.interv-card-value {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #030229;
+    margin: 0;
+}
+
+.interv-card-value--muted {
+    font-weight: 400;
+    font-size: 13px;
+    color: #9797A7;
+}
+
+.interv-card-value--prix {
+    font-weight: 700;
+    font-size: 18px;
+    color: #48CAE4;
+}
+
+.interv-card-commentaire {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #EBEBEB;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.interv-terminee-row {
+    background-color: #FFFFFF;
+    border: 1px solid #EBEBEB;
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+
+.interv-terminee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.interv-terminee-service {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #030229;
+    margin: 0 0 2px 0;
+}
+
+.interv-terminee-date {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #9797A7;
+    margin: 0;
+}
+
+.interv-terminee-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #48CAE4;
+    background: none;
+    border: 1px solid #48CAE4;
+    border-radius: 20px;
+    padding: 4px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.interv-terminee-btn:hover {
+    background-color: #48CAE4;
+    color: #FFFFFF;
+}
+
+.interv-terminee-details {
+    margin-top: 4px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+    .interv-title {
+        font-size: 24px;
+    }
+
+    .interv-card-body {
+        grid-template-columns: 1fr;
+    }
+
+    .interv-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
