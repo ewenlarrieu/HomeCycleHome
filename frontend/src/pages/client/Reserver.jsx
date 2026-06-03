@@ -194,14 +194,21 @@ export default function Reserver() {
 
   useEffect(() => {
     if (!selectedAdresse) return
-    setLoadingCreneaux(true)
-    setSelectedCreneau(null)
     const idZone = selectedAdresse.zone?.id_zone ?? ''
-    fetch(`${import.meta.env.VITE_API_URL}/client/creneaux?id_zone=${idZone}`, { credentials: 'include' })
-      .then(r => r.json())
-      .then(data => setCreneaux(data))
-      .catch(() => setCreneaux([]))
-      .finally(() => setLoadingCreneaux(false))
+    const fetchCreneaux = async () => {
+      setLoadingCreneaux(true)
+      setSelectedCreneau(null)
+      try {
+        const r = await fetch(`${import.meta.env.VITE_API_URL}/client/creneaux?id_zone=${idZone}`, { credentials: 'include' })
+        const data = await r.json()
+        setCreneaux(data)
+      } catch {
+        setCreneaux([])
+      } finally {
+        setLoadingCreneaux(false)
+      }
+    }
+    fetchCreneaux()
   }, [selectedAdresse])
 
   if (loading) return <p className="reserver-loading">Chargement...</p>

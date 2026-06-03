@@ -63,22 +63,22 @@ jobs:
           script: |
             cd /opt/homecyclhome
 
-            # Récupérer les dernières modifications
+
             git pull origin main
 
-            # Arrêter les anciens conteneurs
+
             sudo docker-compose down
 
-            # Rebuilder les images localement
+
             sudo docker-compose build
 
-            # Démarrer les conteneurs
+
             sudo docker-compose up -d
 
-            # Nettoyer les images non utilisées
+
             sudo docker image prune -af
 
-            # Vérifier le statut
+
             sudo docker-compose ps
 
-            echo "Déploiement terminé avec succès!"
+            echo "Déploiement terminé"
