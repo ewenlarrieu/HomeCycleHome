@@ -76,14 +76,22 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 13px;
-    padding: 4px 12px;
+    padding: 6px 32px 6px 14px;
     border-radius: 20px;
-    border: none;
+    border: 2px solid transparent;
     cursor: pointer;
     outline: none;
     flex-shrink: 0;
     appearance: none;
     -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.2s ease;
+}
+
+.interv-status-select:hover {
+    border-color: currentColor;
 }
 
 .interv-status--à-venir {
@@ -210,6 +218,250 @@
 
 .interv-terminee-details {
     margin-top: 4px;
+}
+
+.interv-card-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.interv-btn-annuler {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #E44848;
+    background: none;
+    border: 1px solid #E44848;
+    border-radius: 20px;
+    padding: 4px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.interv-btn-annuler:hover {
+    background-color: #E44848;
+    color: #FFFFFF;
+}
+
+.interv-compact-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.interv-compact-annuler {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #EBEBEB;
+}
+
+.interv-status--annulé {
+    background-color: #FEE8E8;
+    color: #E44848;
+}
+
+/* ── Bouton Modifier ── */
+.interv-btn-modifier {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #030229;
+    background: none;
+    border: 1px solid #808093;
+    border-radius: 20px;
+    padding: 4px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.interv-btn-modifier:hover {
+    background-color: #030229;
+    color: #FFFFFF;
+    border-color: #030229;
+}
+
+.interv-compact-modifier {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #EBEBEB;
+}
+
+/* ── Modal Édition ── */
+.edit-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(3, 2, 41, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.edit-modal {
+    background: #FFFFFF;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 0 24px;
+}
+
+.edit-modal-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #030229;
+    margin: 0;
+}
+
+.edit-modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #9797A7;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.edit-modal-close:hover {
+    color: #030229;
+}
+
+.edit-modal-body {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.edit-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #9797A7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.edit-value-readonly {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #030229;
+    margin: 0;
+}
+
+.edit-input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #030229;
+    border: 1px solid #D0D0D8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.edit-input:focus {
+    border-color: #48CAE4;
+}
+
+.edit-textarea {
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #030229;
+    border: 1px solid #D0D0D8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.edit-textarea:focus {
+    border-color: #48CAE4;
+}
+
+.edit-error {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: #E44848;
+    margin: 0;
+}
+
+.edit-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 24px 24px 24px;
+}
+
+.edit-btn-cancel {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #9797A7;
+    background: none;
+    border: 1px solid #D0D0D8;
+    border-radius: 20px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.edit-btn-cancel:hover {
+    border-color: #9797A7;
+    color: #030229;
+}
+
+.edit-btn-save {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #FFFFFF;
+    background-color: #48CAE4;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.edit-btn-save:hover:not(:disabled) {
+    background-color: #30B8D2;
+}
+
+.edit-btn-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* ── Mobile ── */
