@@ -103,6 +103,7 @@ model rendez_vous {
   id_rendez_vous                                     Int                   @id @default(autoincrement())
   date_rdv                                           DateTime              @db.Timestamp(6)
   commentaire                                        String?               @db.VarChar(50)
+  notes_technicien                                   String?               @db.VarChar(500)
   duree_rdv                                          Int
   id_status_rendez_vous                              Int
   id_cycle                                           Int

@@ -4,7 +4,7 @@ import '../../styles/technicien/Interventions.css'
 const STATUTS = ['à venir', 'en cours', 'terminé']
 
 function EditModal({ rdv, onClose, onSave }) {
-  const [commentaire, setCommentaire] = useState(rdv.commentaire || '')
+  const [notes, setNotes] = useState(rdv.notes_technicien || '')
   const [duree, setDuree] = useState(rdv.duree_rdv || '')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -17,7 +17,7 @@ function EditModal({ rdv, onClose, onSave }) {
         method: 'PUT',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ commentaire, duree_rdv: duree }),
+        body: JSON.stringify({ notes_technicien: notes, duree_rdv: duree }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -67,14 +67,21 @@ function EditModal({ rdv, onClose, onSave }) {
             />
           </div>
 
+          {rdv.commentaire && (
+            <div className="edit-field">
+              <label className="edit-label">Commentaire du client</label>
+              <p className="edit-value-readonly">{rdv.commentaire}</p>
+            </div>
+          )}
+
           <div className="edit-field">
-            <label className="edit-label" htmlFor="edit-commentaire">Commentaire / Notes</label>
+            <label className="edit-label" htmlFor="edit-notes">Notes technicien</label>
             <textarea
-              id="edit-commentaire"
+              id="edit-notes"
               className="edit-textarea"
-              value={commentaire}
-              onChange={e => setCommentaire(e.target.value)}
-              placeholder="Ajouter un commentaire sur l'intervention..."
+              value={notes}
+              onChange={e => setNotes(e.target.value)}
+              placeholder="Ajouter vos remarques sur l'intervention..."
               rows={4}
             />
           </div>
@@ -93,12 +100,94 @@ function EditModal({ rdv, onClose, onSave }) {
   )
 }
 
+function TerminerModal({ rdv, onClose, onSaveNotes, onStatusChange }) {
+  const [notes, setNotes] = useState(rdv.notes_technicien || '')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleConfirm = async () => {
+    setSaving(true)
+    setError('')
+    try {
+      const resNotes = await fetch(`${import.meta.env.VITE_API_URL}/technicien/interventions/${rdv.id_rendez_vous}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes_technicien: notes }),
+      })
+      const notesData = await resNotes.json()
+      if (!resNotes.ok) {
+        setError(notesData.message || 'Erreur lors de la sauvegarde des notes.')
+        return
+      }
+      if (onSaveNotes) onSaveNotes(notesData)
+
+      const resStatus = await fetch(`${import.meta.env.VITE_API_URL}/technicien/interventions/${rdv.id_rendez_vous}/status`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ libelle: 'terminé' }),
+      })
+      const statusData = await resStatus.json()
+      if (!resStatus.ok) {
+        setError(statusData.message || 'Erreur lors de la mise à jour du statut.')
+        return
+      }
+      onStatusChange(rdv.id_rendez_vous, statusData.status_rendez_vous.libelle)
+      onClose()
+    } catch {
+      setError('Impossible de contacter le serveur.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <div className="edit-overlay" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="edit-modal">
+        <div className="edit-modal-header">
+          <h2 className="edit-modal-title">Terminer l'intervention</h2>
+          <button className="edit-modal-close" onClick={onClose}>✕</button>
+        </div>
+        <div className="edit-modal-body">
+          <p className="terminer-description">
+            Ajoutez vos remarques avant de clôturer cette intervention. Les notes sont visibles dans le dossier.
+          </p>
+          <div className="edit-field">
+            <label className="edit-label" htmlFor="terminer-notes">Notes technicien (optionnel)</label>
+            <textarea
+              id="terminer-notes"
+              className="edit-textarea"
+              value={notes}
+              onChange={e => setNotes(e.target.value)}
+              placeholder="Ajouter vos remarques sur l'intervention..."
+              rows={4}
+            />
+          </div>
+          {error && <p className="edit-error">{error}</p>}
+        </div>
+        <div className="edit-modal-footer">
+          <button className="edit-btn-cancel" onClick={onClose}>Annuler</button>
+          <button className="edit-btn-save" onClick={handleConfirm} disabled={saving}>
+            {saving ? 'Enregistrement...' : 'Terminer l\'intervention'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function InterventionCard({ rdv, onStatusChange, onEdit }) {
   const [loading, setLoading] = useState(false)
   const [loadingAnnuler, setLoadingAnnuler] = useState(false)
+  const [showTerminerModal, setShowTerminerModal] = useState(false)
 
   const handleChange = async (e) => {
     const libelle = e.target.value
+    if (libelle === 'terminé') {
+      setShowTerminerModal(true)
+      return
+    }
     setLoading(true)
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/technicien/interventions/${rdv.id_rendez_vous}/status`, {
@@ -187,22 +276,42 @@ function InterventionCard({ rdv, onStatusChange, onEdit }) {
 
       {rdv.commentaire && (
         <div className="interv-card-commentaire">
-          <p className="interv-card-label">Commentaire</p>
+          <p className="interv-card-label">Commentaire client</p>
           <p className="interv-card-value">{rdv.commentaire}</p>
         </div>
+      )}
+      {rdv.notes_technicien && (
+        <div className="interv-card-commentaire">
+          <p className="interv-card-label">Notes technicien</p>
+          <p className="interv-card-value">{rdv.notes_technicien}</p>
+        </div>
+      )}
+
+      {showTerminerModal && (
+        <TerminerModal
+          rdv={rdv}
+          onClose={() => setShowTerminerModal(false)}
+          onSaveNotes={onEdit}
+          onStatusChange={onStatusChange}
+        />
       )}
     </div>
   )
 }
-
+z
 function InterventionCompactRow({ rdv, onStatusChange, onEdit }) {
   const [expanded, setExpanded] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [showTerminerModal, setShowTerminerModal] = useState(false)
   const client = rdv.utilisateur_rendez_vous_id_clientToutilisateur
   const statusLibelle = rdv.status_rendez_vous.libelle
 
   const handleChange = async (e) => {
     const libelle = e.target.value
+    if (libelle === 'terminé') {
+      setShowTerminerModal(true)
+      return
+    }
     setLoading(true)
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/technicien/interventions/${rdv.id_rendez_vous}/status`, {
@@ -271,8 +380,14 @@ function InterventionCompactRow({ rdv, onStatusChange, onEdit }) {
           </div>
           {rdv.commentaire && (
             <div className="interv-card-commentaire">
-              <p className="interv-card-label">Commentaire</p>
+              <p className="interv-card-label">Commentaire client</p>
               <p className="interv-card-value">{rdv.commentaire}</p>
+            </div>
+          )}
+          {rdv.notes_technicien && (
+            <div className="interv-card-commentaire">
+              <p className="interv-card-label">Notes technicien</p>
+              <p className="interv-card-value">{rdv.notes_technicien}</p>
             </div>
           )}
           {onEdit && (
@@ -306,11 +421,20 @@ function InterventionCompactRow({ rdv, onStatusChange, onEdit }) {
           )}
         </div>
       )}
+
+      {showTerminerModal && (
+        <TerminerModal
+          rdv={rdv}
+          onClose={() => setShowTerminerModal(false)}
+          onSaveNotes={onEdit}
+          onStatusChange={onStatusChange}
+        />
+      )}
     </div>
   )
 }
 
-function IntervSection({ title, rdvs, emptyMessage, onStatusChange, onEdit, compact = false }) {
+function IntervSection({ title, rdvs, emptyMessage, onStatusChange, onEdit, onSaveEdit, compact = false }) {
   return (
     <section className="interv-section">
       <h2 className="interv-section-title">{title}</h2>
@@ -319,8 +443,8 @@ function IntervSection({ title, rdvs, emptyMessage, onStatusChange, onEdit, comp
       ) : (
         <div className="interv-list">
           {rdvs.map(rdv => compact
-            ? <InterventionCompactRow key={rdv.id_rendez_vous} rdv={rdv} onStatusChange={onStatusChange} onEdit={onEdit} />
-            : <InterventionCard key={rdv.id_rendez_vous} rdv={rdv} onStatusChange={onStatusChange} onEdit={onEdit} />
+            ? <InterventionCompactRow key={rdv.id_rendez_vous} rdv={rdv} onStatusChange={onStatusChange} onEdit={onEdit} onSaveEdit={onSaveEdit} />
+            : <InterventionCard key={rdv.id_rendez_vous} rdv={rdv} onStatusChange={onStatusChange} onEdit={onEdit} onSaveEdit={onSaveEdit} />
           )}
         </div>
       )}
@@ -365,7 +489,7 @@ export default function Interventions() {
 
   const aujourdhui = rdvs.filter(r => {
     const d = new Date(r.date_rdv)
-    return d >= debutJour && d <= finJour && r.status_rendez_vous.libelle !== 'annulé'
+    return d >= debutJour && d <= finJour && r.status_rendez_vous.libelle !== 'annulé' && r.status_rendez_vous.libelle !== 'terminé'
   })
 
   const actuelle = rdvs.filter(r => r.status_rendez_vous.libelle === 'en cours')

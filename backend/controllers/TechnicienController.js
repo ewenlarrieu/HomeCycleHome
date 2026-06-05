@@ -66,14 +66,15 @@ const updateIntervention = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id)
     const id_technicien = req.user.id_utilisateur
-    const { commentaire, duree_rdv } = req.body
-
     const rdv = await prisma.rendez_vous.findUnique({ where: { id_rendez_vous: id } })
     if (!rdv || rdv.id_technicien !== id_technicien) {
       return res.status(403).json({ status: 403, message: 'Action non autorisée.' })
     }
 
+    const { commentaire, notes_technicien, duree_rdv } = req.body
+
     const data = {}
+    if (notes_technicien !== undefined) data.notes_technicien = notes_technicien || null
     if (commentaire !== undefined) data.commentaire = commentaire || null
     if (duree_rdv !== undefined) {
       const duree = parseInt(duree_rdv)

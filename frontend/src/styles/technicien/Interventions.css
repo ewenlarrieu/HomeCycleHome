@@ -410,6 +410,14 @@
     border-color: #48CAE4;
 }
 
+.terminer-description {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: #9797A7;
+    margin: 0;
+    line-height: 1.5;
+}
+
 .edit-error {
     font-family: 'Nunito', sans-serif;
     font-size: 14px;

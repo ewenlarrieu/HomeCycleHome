@@ -66,8 +66,14 @@ function RdvCard({ rdv, onAnnuler }) {
 
       {rdv.commentaire && (
         <div className="rdv-card-commentaire">
-          <p className="rdv-card-label">Commentaire</p>
+          <p className="rdv-card-label">Votre commentaire</p>
           <p className="rdv-card-value">{rdv.commentaire}</p>
+        </div>
+      )}
+      {rdv.notes_technicien && (
+        <div className="rdv-card-commentaire">
+          <p className="rdv-card-label">Remarques du technicien</p>
+          <p className="rdv-card-value">{rdv.notes_technicien}</p>
         </div>
       )}
     </div>
