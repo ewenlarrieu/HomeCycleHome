@@ -298,7 +298,7 @@ function InterventionCard({ rdv, onStatusChange, onEdit }) {
     </div>
   )
 }
-z
+
 function InterventionCompactRow({ rdv, onStatusChange, onEdit }) {
   const [expanded, setExpanded] = useState(false)
   const [loading, setLoading] = useState(false)

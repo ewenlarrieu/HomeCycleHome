@@ -8,39 +8,40 @@ const errorHandler = require("./middlewares/error.middleware");
 dotenv.config();
 
 if (!process.env.JWT_SECRET) {
-  throw new Error('JWT_SECRET manquant dans .env')
+  throw new Error("JWT_SECRET manquant dans .env");
 }
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  'http://localhost:5173',
+  "http://localhost:5173",
   process.env.FRONTEND_URL,
-].filter(Boolean)
+].filter(Boolean);
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(cookieParser());
-
-// Routes
-const authRoutes = require('./routes/auth.routes')
-const adminRoutes = require('./routes/admin.routes')
-const clientRoutes = require('./routes/client.routes')
-const technicienRoutes = require('./routes/technicien.routes')
-app.use('/api/v1/auth', authRoutes)
-app.use('/api/v1/admin', adminRoutes)
-app.use('/api/v1/client', clientRoutes)
-app.use('/api/v1/technicien', technicienRoutes)
+//Route pour definir les midlewares
+const authRoutes = require("./routes/auth.routes");
+const adminRoutes = require("./routes/admin.routes");
+const clientRoutes = require("./routes/client.routes");
+const technicienRoutes = require("./routes/technicien.routes");
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/client", clientRoutes);
+app.use("/api/v1/technicien", technicienRoutes);
 
 app.get("/api/health", async (req, res) => {
   try {
