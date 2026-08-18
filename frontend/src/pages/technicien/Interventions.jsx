@@ -410,7 +410,7 @@ function InterventionCompactRow({ rdv, onStatusChange, onEdit }) {
                     })
                     const data = await res.json()
                     if (res.ok) onStatusChange(rdv.id_rendez_vous, data.status_rendez_vous.libelle)
-                  } catch (e) {
+                  } catch {
                     alert('Impossible de contacter le serveur.')
                   }
                 }}
